@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { Plus, Filter, Heart, FolderOpen, Search } from 'lucide-react';
+import { Plus, Filter, Heart, FolderOpen, Search, LayoutGrid, List } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import api from '../api';
@@ -23,6 +23,12 @@ const Dashboard = () => {
   const [promptToDelete, setPromptToDelete] = useState(null);
   const [activeFilter, setActiveFilter] = useState(location.state?.selectedPlatform || 'All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [viewMode, setViewMode] = useState(localStorage.getItem('promptViewMode') || 'grid');
+
+  const handleViewModeChange = (mode) => {
+    setViewMode(mode);
+    localStorage.setItem('promptViewMode', mode);
+  };
 
   // Form State
   const [newPrompt, setNewPrompt] = useState({
@@ -251,13 +257,31 @@ const Dashboard = () => {
                 </svg>
               </div>
             </div>
+
+            {/* View Mode Toggle */}
+            <div className="flex bg-[#F0EEEB] p-1 rounded-xl shadow-inner border border-[#E5E2DC] ml-1">
+              <button
+                onClick={() => handleViewModeChange('list')}
+                className={`p-1.5 rounded-lg transition-all flex items-center justify-center ${viewMode === 'list' ? 'bg-white shadow-sm text-[#5C5450]' : 'text-[#A09690] hover:text-[#5C5450]'}`}
+                title="List View"
+              >
+                <List size={18} strokeWidth={2.5} />
+              </button>
+              <button
+                onClick={() => handleViewModeChange('grid')}
+                className={`p-1.5 rounded-lg transition-all flex items-center justify-center ${viewMode === 'grid' ? 'bg-white shadow-sm text-[#5C5450]' : 'text-[#A09690] hover:text-[#5C5450]'}`}
+                title="Grid View"
+              >
+                <LayoutGrid size={18} strokeWidth={2.5} />
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
 
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className={`max-w-7xl mx-auto ${viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6' : 'flex flex-col gap-4'}`}>
         {filteredPrompts.length === 0 ? (
           <div className="col-span-full py-16 flex flex-col items-center justify-center text-center">
             <div className="w-20 h-20 bg-white border border-[#E5E2DC] rounded-2xl flex items-center justify-center mb-4 shadow-sm">
@@ -271,6 +295,7 @@ const Dashboard = () => {
             <PromptCard 
               key={prompt._id} 
               item={prompt}
+              viewMode={viewMode}
               onClick={setSelectedPrompt}
               onCopy={copyToClipboard}
               onDelete={handleDeletePrompt}
