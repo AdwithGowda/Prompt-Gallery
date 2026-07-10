@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { Plus, Filter, Heart } from 'lucide-react';
+import { Plus, Filter, Heart, FolderOpen } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import api from '../api';
 
@@ -218,8 +218,12 @@ const Dashboard = () => {
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {filteredPrompts.length === 0 ? (
-          <div className="col-span-full py-12 text-center text-[#A09690]">
-            No prompts found. Click "New Prompt" to create one!
+          <div className="col-span-full py-16 flex flex-col items-center justify-center text-center">
+            <div className="w-20 h-20 bg-white border border-[#E5E2DC] rounded-2xl flex items-center justify-center mb-4 shadow-sm">
+              <FolderOpen size={40} className="text-[#A09690]" />
+            </div>
+            <h3 className="text-xl font-bold text-[#5C5450] mb-2">It's empty in here</h3>
+            <p className="text-[#A09690]">No prompts found. Click "New Prompt" to create one!</p>
           </div>
         ) : (
           filteredPrompts.map(prompt => (

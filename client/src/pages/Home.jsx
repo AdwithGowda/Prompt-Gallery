@@ -269,11 +269,6 @@ const Home = () => {
             </div>
 
             <div className="flex flex-col md:flex-row items-center gap-8 z-10 w-full">
-              {/* Rocket Image */}
-              <div className="w-40 h-40 md:w-48 md:h-48 shrink-0 flex items-center justify-center -my-8 md:-my-12">
-                <img src="/images/rocket_cta.png" alt="Rocket launching" className="w-full h-full object-contain filter drop-shadow-[0_10px_15px_rgba(0,0,0,0.5)] transform -rotate-12 hover:rotate-0 transition-transform duration-500" />
-              </div>
-
               {/* Text Content */}
               <div className="flex-1 text-center md:text-left">
                 <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-white mb-3 tracking-tight">Ready to supercharge your creativity?</h2>
