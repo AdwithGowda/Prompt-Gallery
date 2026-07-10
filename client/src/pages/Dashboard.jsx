@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { Plus, Filter, Heart } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 
 import PromptCard from '../components/PromptCard';
 import ViewPromptModal from '../components/ViewPromptModal';
@@ -43,7 +43,7 @@ const Dashboard = () => {
         const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
         const token = userInfo.token;
         const config = { headers: { Authorization: `Bearer ${token}` } };
-        const res = await axios.get('/api/prompts', config);
+        const res = await api.get('/prompts', config);
         // Sort newest first
         const sorted = res.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         setPrompts(sorted);
@@ -86,7 +86,7 @@ const Dashboard = () => {
       if (newPrompt.image) {
         const uploadData = new FormData();
         uploadData.append('image', newPrompt.image);
-        const uploadRes = await axios.post('/api/upload', uploadData, config);
+        const uploadRes = await api.post('/upload', uploadData, config);
         thumbnailUrl = uploadRes.data.url;
       }
 
@@ -102,7 +102,7 @@ const Dashboard = () => {
       };
 
       // 3. Save prompt to MongoDB
-      const res = await axios.post('/api/prompts', promptData, config);
+      const res = await api.post('/prompts', promptData, config);
       
       // 4. Update local state
       setPrompts([res.data, ...prompts]);
@@ -126,7 +126,7 @@ const Dashboard = () => {
         const token = userInfo.token;
         const config = { headers: { Authorization: `Bearer ${token}` } };
         
-        await axios.delete(`/api/prompts/${id}`, config);
+        await api.delete(`/prompts/${id}`, config);
         
         // Remove from local state
         setPrompts(prompts.filter(p => p._id !== id));
@@ -147,7 +147,7 @@ const Dashboard = () => {
       setPrompts(prompts.map(p => p._id === id ? { ...p, isFavorite } : p));
       
       // Update on backend
-      await axios.put(`/api/prompts/${id}`, { isFavorite }, config);
+      await api.put(`/prompts/${id}`, { isFavorite }, config);
     } catch (error) {
       console.error('Error toggling favorite:', error);
       // Revert if failed
