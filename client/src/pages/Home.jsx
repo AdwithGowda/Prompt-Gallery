@@ -42,21 +42,25 @@ const Home = () => {
   }, [features.length]);
 
   const typingContainer = {
-    hidden: { opacity: 1 },
+    hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: { 
-        delayChildren: 0.2,
-        staggerChildren: 0.05 
+        delayChildren: 0.1,
+        staggerChildren: 0.04 
       }
     }
   };
 
   const typingChar = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
-      transition: { duration: 0.01 }
+      y: 0,
+      transition: { 
+        duration: 0.5,
+        ease: [0.2, 0.65, 0.3, 0.9]
+      }
     }
   };
 
@@ -118,18 +122,18 @@ const Home = () => {
             className="text-5xl md:text-7xl font-extrabold tracking-tight text-[#5C5450] leading-[1.1] mb-6"
           >
             {"Master your AI ".split("").map((char, index) => (
-              <motion.span key={`l1-${index}`} variants={typingChar}>
+              <motion.span key={`l1-${index}`} variants={typingChar} className="inline-block">
                 {char === " " ? "\u00A0" : char}
               </motion.span>
             ))}
             <br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#5C5450] to-[#A09690]">
+            <motion.span className="text-transparent bg-clip-text bg-gradient-to-r from-[#5C5450] to-[#A09690] inline-block">
               {"prompts.".split("").map((char, index) => (
-                <motion.span key={`l2-${index}`} variants={typingChar}>
+                <motion.span key={`l2-${index}`} variants={typingChar} className="inline-block">
                   {char === " " ? "\u00A0" : char}
                 </motion.span>
               ))}
-            </span>
+            </motion.span>
           </motion.h1>
           
           <motion.p 
