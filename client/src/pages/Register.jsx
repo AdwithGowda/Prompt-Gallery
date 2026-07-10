@@ -10,16 +10,22 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { register } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await register(name, email, password);
-    if (res.success) {
-      navigate('/dashboard');
-    } else {
-      setError(res.message);
+    setIsLoading(true);
+    try {
+      const res = await register(name, email, password);
+      if (res.success) {
+        navigate('/dashboard');
+      } else {
+        setError(res.message);
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -82,9 +88,17 @@ const Register = () => {
           </div>
           <button 
             type="submit" 
-            className="w-full py-2.5 font-bold text-white bg-[#F97316] rounded-xl hover:bg-[#FB923C] transition duration-200 shadow-sm mt-2"
+            disabled={isLoading}
+            className="w-full flex items-center justify-center gap-2 py-2.5 font-bold text-white bg-[#F97316] rounded-xl hover:bg-[#FB923C] transition duration-200 shadow-sm mt-2 disabled:opacity-70 disabled:cursor-not-allowed"
           >
-            Sign Up
+            {isLoading ? (
+              <>
+                <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                Signing Up...
+              </>
+            ) : (
+              'Sign Up'
+            )}
           </button>
         </form>
         <div className="text-center text-sm text-[#A09690]">
