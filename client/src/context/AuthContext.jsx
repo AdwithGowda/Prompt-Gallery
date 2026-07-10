@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const updateProfile = async (email, password) => {
+  const updateProfile = async (name, email, password) => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
       const token = userInfo.token;
@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) => {
         } 
       };
       
-      const { data } = await api.put('/auth/profile', { email, password }, config);
+      const { data } = await api.put('/auth/profile', { name, email, password }, config);
       setUser(data);
       localStorage.setItem('userInfo', JSON.stringify(data));
       return { success: true };

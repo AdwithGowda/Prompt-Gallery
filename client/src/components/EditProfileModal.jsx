@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
-import { X, User as UserIcon, Eye, EyeOff } from 'lucide-react';
+import { X, User as UserIcon, Eye, EyeOff, Edit2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AuthContext } from '../context/AuthContext';
 import { toast } from 'react-hot-toast';
@@ -8,6 +8,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
   const { user, updateProfile } = useContext(AuthContext);
   
   const [formData, setFormData] = useState({
+    name: '',
     email: '',
     password: '',
     confirmPassword: ''
@@ -15,14 +16,19 @@ const EditProfileModal = ({ isOpen, onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [isEditingEmail, setIsEditingEmail] = useState(false);
 
   useEffect(() => {
     if (isOpen && user) {
       setFormData({
+        name: user.name || '',
         email: user.email || '',
         password: '',
         confirmPassword: ''
       });
+      setIsEditingName(false);
+      setIsEditingEmail(false);
     }
   }, [isOpen, user]);
 
@@ -38,10 +44,12 @@ const EditProfileModal = ({ isOpen, onClose }) => {
     
     const passwordToUpdate = formData.password ? formData.password : undefined;
     
-    const result = await updateProfile(formData.email, passwordToUpdate);
+    const result = await updateProfile(formData.name, formData.email, passwordToUpdate);
     
     if (result.success) {
       toast.success('Profile updated successfully!');
+      setIsEditingName(false);
+      setIsEditingEmail(false);
       setTimeout(() => {
         onClose();
       }, 1500);
@@ -86,25 +94,77 @@ const EditProfileModal = ({ isOpen, onClose }) => {
             <div className="p-6">
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-bold text-[#5C5450] mb-1">Email Address</label>
+                  <div className="flex justify-between items-center mb-1">
+                    <label className="block text-sm font-bold text-[#5C5450]">Full Name</label>
+                    <button 
+                      type="button" 
+                      onClick={() => {
+                        if (isEditingName) {
+                          setFormData(prev => ({...prev, name: user.name || ''}));
+                        }
+                        setIsEditingName(!isEditingName);
+                      }}
+                      className="text-xs font-bold text-[#F97316] hover:text-[#FB923C] transition-colors flex items-center gap-1 bg-[#F97316]/10 px-2 py-1 rounded-md"
+                    >
+                      {isEditingName ? 'Cancel' : <><Edit2 size={12} /> Edit</>}
+                    </button>
+                  </div>
                   <input 
-                    type="email" 
-                    value={formData.email}
-                    onChange={(e) => setFormData({...formData, email: e.target.value})}
-                    placeholder="your@email.com"
-                    className="w-full bg-[#F0EEEB] border border-[#E5E2DC] rounded-xl px-4 py-2.5 text-[#5C5450] placeholder-[#A09690] focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] transition-colors"
+                    type="text" 
+                    value={formData.name}
+                    onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    disabled={!isEditingName}
+                    placeholder="Your Name"
+                    className={`w-full border rounded-xl px-4 py-2.5 transition-colors focus:outline-none focus:ring-1 ${
+                      isEditingName 
+                        ? 'bg-[#F0EEEB] border-[#E5E2DC] text-[#5C5450] focus:border-[#F97316] focus:ring-[#F97316]' 
+                        : 'bg-[#F7F5F0] border-transparent text-[#A09690] cursor-not-allowed opacity-80'
+                    }`}
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-[#5C5450] mb-1">New Password</label>
+                  <div className="flex justify-between items-center mb-1">
+                    <label className="block text-sm font-bold text-[#5C5450]">Email Address</label>
+                    <button 
+                      type="button" 
+                      onClick={() => {
+                        if (isEditingEmail) {
+                          setFormData(prev => ({...prev, email: user.email || ''}));
+                        }
+                        setIsEditingEmail(!isEditingEmail);
+                      }}
+                      className="text-xs font-bold text-[#F97316] hover:text-[#FB923C] transition-colors flex items-center gap-1 bg-[#F97316]/10 px-2 py-1 rounded-md"
+                    >
+                      {isEditingEmail ? 'Cancel' : <><Edit2 size={12} /> Edit</>}
+                    </button>
+                  </div>
+                  <input 
+                    type="email" 
+                    value={formData.email}
+                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    disabled={!isEditingEmail}
+                    placeholder="your@email.com"
+                    className={`w-full border rounded-xl px-4 py-2.5 transition-colors focus:outline-none focus:ring-1 ${
+                      isEditingEmail 
+                        ? 'bg-[#F0EEEB] border-[#E5E2DC] text-[#5C5450] focus:border-[#F97316] focus:ring-[#F97316]' 
+                        : 'bg-[#F7F5F0] border-transparent text-[#A09690] cursor-not-allowed opacity-80'
+                    }`}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-[#5C5450] mb-1">
+                    New Password <span className="text-xs font-normal text-[#A09690] ml-1">(Leave blank to keep current)</span>
+                  </label>
                   <div className="relative">
                     <input 
                       type={showPassword ? 'text' : 'password'} 
                       value={formData.password}
                       onChange={(e) => setFormData({...formData, password: e.target.value})}
-                      placeholder="Leave blank to keep current"
+                      placeholder="••••••••"
                       className="w-full bg-[#F0EEEB] border border-[#E5E2DC] rounded-xl px-4 py-2.5 pr-10 text-[#5C5450] placeholder-[#A09690] focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] transition-colors"
                     />
                     <button

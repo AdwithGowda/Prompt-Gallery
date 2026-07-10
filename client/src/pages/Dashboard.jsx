@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { Plus, Filter, Heart, FolderOpen } from 'lucide-react';
+import { Plus, Filter, Heart, FolderOpen, Search } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import api from '../api';
@@ -22,6 +22,7 @@ const Dashboard = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [promptToDelete, setPromptToDelete] = useState(null);
   const [activeFilter, setActiveFilter] = useState(location.state?.selectedPlatform || 'All');
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Form State
   const [newPrompt, setNewPrompt] = useState({
@@ -170,11 +171,23 @@ const Dashboard = () => {
     }
   };
 
-  const filteredPrompts = activeFilter === 'All' 
-    ? prompts 
-    : activeFilter === 'Favorites'
-      ? prompts.filter(p => p.isFavorite)
-      : prompts.filter(p => p.platform === activeFilter || p.aiModel === activeFilter);
+  const filteredPrompts = prompts.filter(p => {
+    // 1. Platform / Favorite filter
+    const matchesFilter = activeFilter === 'All' 
+      ? true 
+      : activeFilter === 'Favorites' 
+        ? p.isFavorite 
+        : (p.platform === activeFilter || p.aiModel === activeFilter);
+        
+    // 2. Search query filter
+    const searchLower = searchQuery.toLowerCase();
+    const matchesSearch = !searchQuery || 
+      (p.title && p.title.toLowerCase().includes(searchLower)) || 
+      (p.platform && p.platform.toLowerCase().includes(searchLower)) || 
+      (p.aiModel && p.aiModel.toLowerCase().includes(searchLower));
+
+    return matchesFilter && matchesSearch;
+  });
 
   return (
     <div className="min-h-screen bg-[#F7F5F0] p-8 text-[#5C5450] font-sans relative">
@@ -187,11 +200,24 @@ const Dashboard = () => {
           {/* App Navigation Group */}
           <div className="flex flex-wrap items-center gap-2">
             
+            {/* Search Bar */}
+            <div className="relative w-full sm:w-auto mr-0 sm:mr-2 mb-2 sm:mb-0">
+              <input 
+                type="text"
+                placeholder="Search prompts..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 pr-4 py-2.5 rounded-xl border border-[#E5E2DC] bg-white text-sm text-[#5C5450] placeholder-[#A09690] focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] transition-all w-full sm:w-64 shadow-sm"
+              />
+              <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#A09690]" />
+            </div>
+            
             <button 
               onClick={() => setIsCreateModalOpen(true)}
-              className="flex items-center gap-2 bg-[#F97316] hover:bg-[#FB923C] text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm hover:shadow-md"
+              className="fixed bottom-8 right-8 md:static md:bottom-auto md:right-auto w-16 h-16 md:w-auto md:h-auto md:px-6 md:py-3 bg-gradient-to-r from-[#F97316] via-[#f59e0b] to-[#F97316] animate-bg-gradient text-white rounded-2xl md:rounded-xl flex items-center justify-center text-sm md:text-base font-bold transition-all shadow-xl md:shadow-sm hover:shadow-2xl md:hover:shadow-md hover:scale-105 active:scale-95 z-40"
             >
-              <Plus size={18} /> New Prompt
+              <Plus className="w-8 h-8 md:w-5 md:h-5" /> 
+              <span className="hidden md:inline ml-2">New Prompt</span>
             </button>
             
             <button 

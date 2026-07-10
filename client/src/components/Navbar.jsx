@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Database, LogOut, User as UserIcon, Menu, X } from 'lucide-react';
+import { Database, LogOut, User as UserIcon, Menu, X, Home as HomeIcon } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 import EditProfileModal from './EditProfileModal';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -36,8 +36,11 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className={`w-full z-50 ${isHome ? 'absolute top-0 bg-transparent' : 'sticky top-0 bg-white border-b border-[#E5E2DC] shadow-sm'}`}>
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div className={`w-full z-50 flex justify-center ${isHome ? 'absolute top-4' : 'sticky top-4 mb-4'}`}>
+        <nav className={`w-[96%] max-w-7xl rounded-full transition-all duration-300 ${
+          isHome ? 'bg-white/70 backdrop-blur-md shadow-sm border border-white/50' : 'bg-white/90 backdrop-blur-md shadow-md border border-[#E5E2DC]'
+        }`}>
+          <div className="px-5 md:px-8 py-3 flex justify-between items-center">
           
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 z-50">
@@ -46,35 +49,41 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-6">
             {user ? (
               <>
+                {!isHome && (
+                  <Link to="/" className="flex items-center gap-2 text-sm font-bold transition-all px-1 py-1 text-[#5C5450] border-b-2 border-transparent hover:border-[#F97316]">
+                    <HomeIcon size={18} /> Home
+                  </Link>
+                )}
+                
                 {isHome && (
-                  <Link to="/dashboard" className="bg-[#5C5450] hover:bg-[#FB923C] text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm hover:shadow-md">
+                  <Link to="/dashboard" className="mr-2 bg-[#5C5450] hover:bg-[#FB923C] text-white px-5 py-2.5 rounded-full text-sm font-bold transition-all shadow-sm hover:shadow-md">
                     Dashboard
                   </Link>
                 )}
                 
                 <button 
                   onClick={() => setIsEditProfileModalOpen(true)} 
-                  className={`flex items-center gap-2 text-sm font-bold transition-all px-4 py-2.5 rounded-xl ${isHome ? 'bg-white text-[#5C5450] border border-[#E5E2DC] hover:border-[#5C5450]' : 'text-[#A09690] hover:text-[#5C5450] hover:bg-slate-50'}`}
+                  className="flex items-center gap-2 text-sm font-bold transition-all px-1 py-1 text-[#5C5450] border-b-2 border-transparent hover:border-[#F97316]"
                 >
                   <UserIcon size={18} /> Edit Profile
                 </button>
 
                 <button 
                   onClick={handleSignOut} 
-                  className={`flex items-center gap-2 text-sm font-bold transition-all px-4 py-2.5 rounded-xl ${isHome ? 'bg-white text-[#5C5450] border border-[#E5E2DC] hover:border-[#5C5450]' : 'text-[#A09690] hover:text-[#5C5450] hover:bg-slate-50'}`}
+                  className="flex items-center gap-2 text-sm font-bold transition-all px-1 py-1 text-[#5C5450] border-b-2 border-transparent hover:border-[#F97316]"
                 >
                   <LogOut size={18} /> Sign Out
                 </button>
               </>
             ) : (
               <>
-                <Link to="/login" className="text-[#5C5450] font-semibold hover:text-[#5C5450] transition-colors">
+                <Link to="/login" className="text-sm font-bold transition-all px-1 py-1 text-[#5C5450] border-b-2 border-transparent hover:border-[#F97316]">
                   Log In
                 </Link>
-                <Link to="/register" className="bg-[#5C5450] hover:bg-[#FB923C] text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm hover:shadow-md">
+                <Link to="/register" className="ml-2 bg-[#5C5450] hover:bg-[#FB923C] text-white px-5 py-2.5 rounded-full text-sm font-bold transition-all shadow-sm hover:shadow-md">
                   Sign Up
                 </Link>
               </>
@@ -94,10 +103,10 @@ const Navbar = () => {
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="md:hidden bg-white border-b border-[#E5E2DC] overflow-hidden absolute w-full left-0 top-full shadow-lg"
+              initial={{ opacity: 0, y: -10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.95 }}
+              className="md:hidden absolute w-full left-0 top-[110%] bg-white rounded-3xl border border-[#E5E2DC] overflow-hidden shadow-2xl"
             >
               <div className="px-6 py-4 flex flex-col gap-4">
                 {user ? (
@@ -113,8 +122,14 @@ const Navbar = () => {
                     </div>
                     
                     {isHome && (
-                      <Link to="/dashboard" className="flex justify-center bg-[#F97316] text-white px-5 py-3 rounded-xl font-bold shadow-sm">
+                      <Link to="/dashboard" onClick={() => setIsMobileMenuOpen(false)} className="flex justify-center bg-[#F97316] text-white px-5 py-3 rounded-xl font-bold shadow-sm">
                         Go to Dashboard
+                      </Link>
+                    )}
+                    
+                    {!isHome && (
+                      <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 p-3 text-[#5C5450] font-bold hover:bg-slate-50 rounded-xl">
+                        <HomeIcon size={20} className="text-[#A09690]" /> Home
                       </Link>
                     )}
                     
@@ -149,7 +164,8 @@ const Navbar = () => {
             </motion.div>
           )}
         </AnimatePresence>
-      </nav>
+        </nav>
+      </div>
 
       {/* Edit Profile Modal (Rendered globally but hidden by default) */}
       <EditProfileModal 
