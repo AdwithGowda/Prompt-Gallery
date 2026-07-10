@@ -3,12 +3,13 @@ import { AuthContext } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
+import MasonryBackground from '../components/MasonryBackground';
+import { toast } from 'react-hot-toast';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -19,9 +20,10 @@ const Login = () => {
     try {
       const res = await login(email, password);
       if (res.success) {
+        toast.success('Welcome back!');
         navigate('/dashboard');
       } else {
-        setError(res.message);
+        toast.error(res.message);
       }
     } finally {
       setIsLoading(false);
@@ -29,21 +31,20 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-[#F7F5F0] relative">
-      <div className="absolute top-6 left-6 md:top-8 md:left-8">
-        <Link to="/" className="flex items-center gap-2 text-[#A09690] hover:text-[#5C5450] font-bold transition-colors">
+    <div className="flex items-center justify-center min-h-screen relative">
+      <MasonryBackground />
+      <div className="absolute top-6 left-6 md:top-8 md:left-8 z-10">
+        <Link to="/" className="flex items-center gap-2 text-white/70 hover:text-white font-bold transition-colors drop-shadow-md">
           <ArrowLeft size={20} /> Back to Home
         </Link>
       </div>
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md p-8 space-y-6 bg-white rounded-2xl shadow-xl border border-[#E5E2DC]"
+        className="w-full max-w-md p-8 space-y-6 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-white/20 relative z-10"
       >
         <h2 className="text-3xl font-bold text-center text-[#5C5450]">Prompt Gallery AI</h2>
         <p className="text-center text-[#A09690]">Sign in to manage your prompts</p>
-        
-        {error && <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl">{error}</div>}
         
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>

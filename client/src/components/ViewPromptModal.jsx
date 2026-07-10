@@ -1,7 +1,10 @@
-import { X, Copy, Image as ImageIcon } from 'lucide-react';
+import { useState } from 'react';
+import { X, Copy, Image as ImageIcon, ZoomIn } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const ViewPromptModal = ({ prompt, onClose, onCopy }) => {
+  const [isImageViewerOpen, setIsImageViewerOpen] = useState(false);
+
   if (!prompt) return null;
 
   return (
@@ -30,9 +33,28 @@ const ViewPromptModal = ({ prompt, onClose, onCopy }) => {
               <X size={20} />
             </button>
 
-            <div className="md:w-1/2 bg-[#F0EEEB] min-h-[300px] flex items-center justify-center relative overflow-hidden">
+            <div className="md:w-1/2 bg-[#F0EEEB] min-h-[300px] flex items-center justify-center relative overflow-hidden group">
               {prompt.thumbnail ? (
-                <img src={prompt.thumbnail} alt={prompt.title} className="w-full h-full object-cover" />
+                <>
+                  <img 
+                    src={prompt.thumbnail} 
+                    alt={prompt.title} 
+                    className="w-full h-full object-cover cursor-zoom-in transition-transform duration-500 group-hover:scale-105" 
+                    onClick={() => setIsImageViewerOpen(true)}
+                  />
+                  {/* Hover indicator for desktop */}
+                  <div className="hidden md:flex absolute inset-0 pointer-events-none bg-black/0 group-hover:bg-black/10 transition-colors duration-300 items-center justify-center">
+                    <div className="opacity-0 group-hover:opacity-100 bg-black/50 text-white p-3 rounded-full backdrop-blur-sm transition-all duration-300 transform scale-90 group-hover:scale-100">
+                      <ZoomIn size={24} />
+                    </div>
+                  </div>
+                  
+                  {/* Persistent indicator for mobile */}
+                  <div className="md:hidden absolute bottom-4 right-4 pointer-events-none bg-black/60 text-white px-3 py-1.5 rounded-full backdrop-blur-sm flex items-center gap-2 text-xs font-medium shadow-lg border border-white/20">
+                    <ZoomIn size={14} />
+                    <span>Tap to view</span>
+                  </div>
+                </>
               ) : (
                 <ImageIcon size={96} className="text-slate-300" />
               )}
@@ -52,9 +74,9 @@ const ViewPromptModal = ({ prompt, onClose, onCopy }) => {
                 ))}
               </div>
               
-              <div className="flex-1 mb-6">
-                <h3 className="text-sm font-bold text-[#5C5450] uppercase tracking-wider mb-3">Prompt Details</h3>
-                <div className="bg-[#F7F5F0] border border-[#E5E2DC] rounded-xl p-4 h-[200px] overflow-y-auto">
+              <div className="flex-1 mb-6 flex flex-col min-h-0">
+                <h3 className="text-sm font-bold text-[#5C5450] uppercase tracking-wider mb-3 shrink-0">Prompt Details</h3>
+                <div className="bg-[#F7F5F0] border border-[#E5E2DC] rounded-xl p-4 flex-1 overflow-y-auto">
                   <p className="text-[#5C5450] font-mono text-sm leading-relaxed whitespace-pre-wrap">
                     {prompt.prompt}
                   </p>
@@ -71,6 +93,42 @@ const ViewPromptModal = ({ prompt, onClose, onCopy }) => {
           </motion.div>
         </div>
       )}
+
+      {/* Full Screen Image Viewer */}
+      <AnimatePresence>
+        {isImageViewerOpen && prompt?.thumbnail && (
+          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsImageViewerOpen(false)}
+              className="absolute inset-0 bg-black/95 backdrop-blur-md cursor-zoom-out"
+            />
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
+              className="relative z-10 w-full h-full flex items-center justify-center pointer-events-none"
+            >
+              <img 
+                src={prompt.thumbnail} 
+                alt={prompt.title} 
+                className="max-w-full max-h-full object-contain drop-shadow-2xl pointer-events-auto rounded-xl"
+                onClick={(e) => e.stopPropagation()}
+              />
+              <button 
+                onClick={() => setIsImageViewerOpen(false)}
+                className="absolute top-4 right-4 p-3 bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-md transition-colors pointer-events-auto"
+              >
+                <X size={24} />
+              </button>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </AnimatePresence>
   );
 };

@@ -2,11 +2,13 @@ import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { Plus, Filter, Heart, FolderOpen } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 import api from '../api';
 
 import PromptCard from '../components/PromptCard';
 import ViewPromptModal from '../components/ViewPromptModal';
 import CreatePromptModal from '../components/CreatePromptModal';
+import DeleteConfirmationModal from '../components/DeleteConfirmationModal';
 
 // Hardcoded platforms for the filter (you could also derive these dynamically)
 const filterPlatforms = ["All", "Midjourney", "ChatGPT", "DALL-E 3", "Stable Diffusion", "Claude", "Gemini", "Runway", "Sora", "Leonardo AI", "Suno", "ElevenLabs", "Luma"];
@@ -18,6 +20,7 @@ const Dashboard = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [prompts, setPrompts] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [promptToDelete, setPromptToDelete] = useState(null);
   const [activeFilter, setActiveFilter] = useState(location.state?.selectedPlatform || 'All');
 
   // Form State
@@ -33,7 +36,7 @@ const Dashboard = () => {
   const copyToClipboard = (text, e) => {
     if (e) e.stopPropagation();
     navigator.clipboard.writeText(text);
-    alert('Prompt copied to clipboard!');
+    toast.success('Prompt copied to clipboard!');
   };
 
   // Fetch prompts on mount
@@ -111,29 +114,34 @@ const Dashboard = () => {
       
     } catch (error) {
       console.error('Error creating prompt:', error);
-      alert('Failed to create prompt: ' + (error.response?.data?.message || error.message));
+      toast.error('Failed to create prompt: ' + (error.response?.data?.message || error.message));
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleDeletePrompt = async (id, e) => {
+  const handleDeletePrompt = (id, e) => {
     if (e) e.stopPropagation();
+    setPromptToDelete(id);
+  };
+
+  const confirmDelete = async () => {
+    if (!promptToDelete) return;
     
-    if (window.confirm('Are you sure you want to delete this prompt?')) {
-      try {
-        const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
-        const token = userInfo.token;
-        const config = { headers: { Authorization: `Bearer ${token}` } };
-        
-        await api.delete(`/prompts/${id}`, config);
-        
-        // Remove from local state
-        setPrompts(prompts.filter(p => p._id !== id));
-      } catch (error) {
-        console.error('Error deleting prompt:', error);
-        alert('Failed to delete prompt: ' + (error.response?.data?.message || error.message));
-      }
+    try {
+      const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+      const token = userInfo.token;
+      const config = { headers: { Authorization: `Bearer ${token}` } };
+      
+      await api.delete(`/prompts/${promptToDelete}`, config);
+      
+      setPrompts(prev => prev.filter(p => p._id !== promptToDelete));
+      toast.success('Prompt deleted successfully');
+    } catch (error) {
+      console.error('Error deleting prompt:', error);
+      toast.error('Failed to delete prompt: ' + (error.response?.data?.message || error.message));
+    } finally {
+      setPromptToDelete(null);
     }
   };
 
@@ -146,12 +154,19 @@ const Dashboard = () => {
       // Update locally immediately for snappy UI
       setPrompts(prompts.map(p => p._id === id ? { ...p, isFavorite } : p));
       
+      if (isFavorite) {
+        toast.success('Added to favorites');
+      } else {
+        toast.success('Removed from favorites');
+      }
+      
       // Update on backend
       await api.put(`/prompts/${id}`, { isFavorite }, config);
     } catch (error) {
       console.error('Error toggling favorite:', error);
       // Revert if failed
       setPrompts(prompts.map(p => p._id === id ? { ...p, isFavorite: !isFavorite } : p));
+      toast.error('Failed to update favorites');
     }
   };
 
@@ -253,6 +268,12 @@ const Dashboard = () => {
         setFormData={setNewPrompt} 
         onSubmit={handleCreatePrompt} 
         isLoading={isSubmitting}
+      />
+
+      <DeleteConfirmationModal
+        isOpen={!!promptToDelete}
+        onClose={() => setPromptToDelete(null)}
+        onConfirm={confirmDelete}
       />
     </div>
   );

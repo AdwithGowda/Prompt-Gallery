@@ -2,6 +2,7 @@ import { useState, useContext, useEffect } from 'react';
 import { X, User as UserIcon, Eye, EyeOff } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AuthContext } from '../context/AuthContext';
+import { toast } from 'react-hot-toast';
 
 const EditProfileModal = ({ isOpen, onClose }) => {
   const { user, updateProfile } = useContext(AuthContext);
@@ -12,8 +13,6 @@ const EditProfileModal = ({ isOpen, onClose }) => {
     confirmPassword: ''
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -24,18 +23,14 @@ const EditProfileModal = ({ isOpen, onClose }) => {
         password: '',
         confirmPassword: ''
       });
-      setError('');
-      setSuccess('');
     }
   }, [isOpen, user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
     
     if (formData.password && formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+      toast.error('Passwords do not match');
       return;
     }
     
@@ -46,12 +41,12 @@ const EditProfileModal = ({ isOpen, onClose }) => {
     const result = await updateProfile(formData.email, passwordToUpdate);
     
     if (result.success) {
-      setSuccess('Profile updated successfully!');
+      toast.success('Profile updated successfully!');
       setTimeout(() => {
         onClose();
       }, 1500);
     } else {
-      setError(result.message);
+      toast.error(result.message);
     }
     
     setIsLoading(false);
@@ -89,18 +84,6 @@ const EditProfileModal = ({ isOpen, onClose }) => {
             </div>
 
             <div className="p-6">
-              {error && (
-                <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-xl text-sm border border-red-100 font-medium">
-                  {error}
-                </div>
-              )}
-              
-              {success && (
-                <div className="mb-4 p-3 bg-green-50 text-green-600 rounded-xl text-sm border border-green-100 font-medium">
-                  {success}
-                </div>
-              )}
-
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label className="block text-sm font-bold text-[#5C5450] mb-1">Email Address</label>

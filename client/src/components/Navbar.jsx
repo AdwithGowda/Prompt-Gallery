@@ -11,11 +11,21 @@ const Navbar = () => {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
+  const [isSigningOut, setIsSigningOut] = useState(false);
 
   // Close mobile menu on route change
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
+
+  const handleSignOut = () => {
+    setIsSigningOut(true);
+    setIsMobileMenuOpen(false);
+    setTimeout(() => {
+      logout();
+      setIsSigningOut(false);
+    }, 1500); // Show loading page for 1.5 seconds
+  };
 
   const isHome = location.pathname === '/';
   
@@ -53,7 +63,7 @@ const Navbar = () => {
                 </button>
 
                 <button 
-                  onClick={logout} 
+                  onClick={handleSignOut} 
                   className={`flex items-center gap-2 text-sm font-bold transition-all px-4 py-2.5 rounded-xl ${isHome ? 'bg-white text-[#5C5450] border border-[#E5E2DC] hover:border-[#5C5450]' : 'text-[#A09690] hover:text-[#5C5450] hover:bg-slate-50'}`}
                 >
                   <LogOut size={18} /> Sign Out
@@ -119,10 +129,7 @@ const Navbar = () => {
                     </button>
                     
                     <button 
-                      onClick={() => {
-                        setIsMobileMenuOpen(false);
-                        logout();
-                      }} 
+                      onClick={handleSignOut} 
                       className="flex items-center gap-3 p-3 text-red-500 font-bold hover:bg-red-50 rounded-xl"
                     >
                       <LogOut size={20} className="text-red-400" /> Sign Out
@@ -133,7 +140,7 @@ const Navbar = () => {
                     <Link to="/login" className="flex justify-center border border-[#E5E2DC] text-[#5C5450] bg-white px-5 py-3 rounded-xl font-bold shadow-sm">
                       Log In
                     </Link>
-                    <Link to="/register" className="flex justify-center bg-[#5C5450] text-white px-5 py-3 rounded-xl font-bold shadow-sm">
+    <Link to="/register" className="flex justify-center bg-[#5C5450] text-white px-5 py-3 rounded-xl font-bold shadow-sm">
                       Sign Up
                     </Link>
                   </div>
@@ -149,6 +156,39 @@ const Navbar = () => {
         isOpen={isEditProfileModalOpen} 
         onClose={() => setIsEditProfileModalOpen(false)} 
       />
+
+      {/* Sign Out Loading Overlay */}
+      <AnimatePresence>
+        {isSigningOut && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#F7F5F0]"
+          >
+            <div className="relative mb-6">
+              <div className="w-20 h-20 border-4 border-[#E5E2DC] rounded-full"></div>
+              <div className="w-20 h-20 border-4 border-transparent border-t-[#F97316] rounded-full animate-spin absolute inset-0"></div>
+            </div>
+            <motion.h2 
+              initial={{ y: 10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="text-3xl font-bold text-[#5C5450] tracking-tight mb-2"
+            >
+              Signing out...
+            </motion.h2>
+            <motion.p 
+              initial={{ y: 10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="text-[#A09690] font-medium"
+            >
+              See you next time!
+            </motion.p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };

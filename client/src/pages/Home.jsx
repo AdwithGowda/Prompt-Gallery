@@ -106,7 +106,7 @@ const Home = () => {
       </div>
 
       {/* Hero Section */}
-      <main className="max-w-7xl mx-auto px-6 pt-20 pb-24 md:pt-32 relative z-10">
+      <main className="max-w-7xl mx-auto px-6 pt-36 pb-24 md:pt-48 relative z-10">
         <div className="text-center max-w-5xl mx-auto">
           <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-[#EBE8E3] text-[#5C5450] font-bold text-sm tracking-wide">
             THE ULTIMATE PROMPT LIBRARY

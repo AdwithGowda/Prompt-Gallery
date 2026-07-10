@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import { useContext } from 'react';
+import { Toaster } from 'react-hot-toast';
 
 // Pages
 import Home from './pages/Home';
@@ -28,6 +29,25 @@ function App() {
     <AuthProvider>
       <Router>
         <div className="min-h-screen bg-[#F7F5F0] font-sans text-[#5C5450]">
+          <Toaster 
+            position="bottom-right"
+            toastOptions={{
+              style: {
+                background: '#333',
+                color: '#fff',
+                borderRadius: '12px',
+                padding: '16px',
+                fontSize: '14px',
+                fontWeight: 'bold',
+              },
+              success: {
+                iconTheme: {
+                  primary: '#10b981',
+                  secondary: '#fff',
+                },
+              },
+            }}
+          />
           <Navbar />
           <Routes>
             <Route 
