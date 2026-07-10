@@ -115,7 +115,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-[#5C5450] mb-1">New Password (optional)</label>
+                  <label className="block text-sm font-bold text-[#5C5450] mb-1">New Password</label>
                   <div className="relative">
                     <input 
                       type={showPassword ? 'text' : 'password'} 
