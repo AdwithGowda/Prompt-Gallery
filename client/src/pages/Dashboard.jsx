@@ -11,7 +11,7 @@ import CreatePromptModal from '../components/CreatePromptModal';
 import DeleteConfirmationModal from '../components/DeleteConfirmationModal';
 
 // Hardcoded platforms for the filter (you could also derive these dynamically)
-const filterPlatforms = ["All", "Midjourney", "ChatGPT", "DALL-E 3", "Stable Diffusion", "Claude", "Gemini", "Runway", "Sora", "Leonardo AI", "Suno", "ElevenLabs", "Luma"];
+const filterPlatforms = ["All", "Gemini", "ChatGPT", "Midjourney", "DALL-E 3", "Stable Diffusion", "Claude", "Runway", "Sora", "Leonardo AI", "Suno", "ElevenLabs", "Luma"];
 
 const Dashboard = () => {
   const { user } = useContext(AuthContext);
@@ -239,24 +239,6 @@ const Dashboard = () => {
               Favorites
             </button>
 
-            {/* Filter Dropdown */}
-            <div className="relative group ml-1">
-              <select 
-                value={activeFilter}
-                onChange={(e) => setActiveFilter(e.target.value)}
-                className="appearance-none bg-white border border-[#E5E2DC] group-hover:border-[#D0CCC5] text-[#5C5450] pl-10 pr-8 py-2.5 rounded-xl text-sm font-bold transition-all focus:outline-none focus:ring-1 focus:ring-[#5C5450] cursor-pointer shadow-sm min-w-[140px]"
-              >
-                {filterPlatforms.map(p => (
-                  <option key={p} value={p}>{p}</option>
-                ))}
-              </select>
-              <Filter size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#A09690] group-hover:text-[#5C5450] transition-colors pointer-events-none" />
-              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#A09690] group-hover:text-[#5C5450] transition-colors"/>
-                </svg>
-              </div>
-            </div>
 
             {/* View Mode Toggle */}
             <div className="flex bg-[#F0EEEB] p-1 rounded-xl shadow-inner border border-[#E5E2DC] ml-1">
@@ -279,7 +261,50 @@ const Dashboard = () => {
         </div>
       </div>
 
+      {/* Hide Scrollbar Style */}
+      <style>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
 
+      {/* Scrollable Filter Row */}
+      <div className="max-w-7xl mx-auto w-full overflow-x-auto pb-4 mb-6 scrollbar-hide">
+        <div className="flex items-center gap-3 w-max px-2">
+          {filterPlatforms.map(p => {
+            const isActive = activeFilter === p;
+            const count = p === 'All' 
+              ? prompts.length 
+              : prompts.filter(pr => pr.platform === p || pr.aiModel === p).length;
+              
+            return (
+              <button
+                key={p}
+                onClick={(e) => {
+                  setActiveFilter(p);
+                  e.currentTarget.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all border ${
+                  isActive
+                    ? 'bg-[#F97316] border-[#F97316] text-white shadow-md shadow-[#F97316]/30' 
+                    : 'bg-[rgb(98,84,80)] border-[rgb(98,84,80)] text-white/90 hover:bg-[rgb(108,94,90)] hover:text-white'
+                }`}
+              >
+                <span>{p}</span>
+                {p !== 'All' && (
+                  <span className={`text-xs font-medium ${isActive ? 'text-white/90' : 'text-white/60'}`}>
+                    {count}
+                  </span>
+                )}
+              </button>
+            )
+          })}
+        </div>
+      </div>
 
       <div className={`max-w-7xl mx-auto ${viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6' : 'flex flex-col gap-4'}`}>
         {filteredPrompts.length === 0 ? (

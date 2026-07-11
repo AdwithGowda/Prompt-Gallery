@@ -1,61 +1,83 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
 
-const stylesData = [
+const platformsData = [
   {
     id: 1,
-    name: "Portrait & People",
-    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=1200&auto=format&fit=crop&q=80",
+    name: "Midjourney",
+    image: "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=1200&auto=format&fit=crop&q=80",
+    website: "https://www.midjourney.com/"
   },
   {
     id: 2,
-    name: "Nature & Landscape",
-    image: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&auto=format&fit=crop&q=80",
+    name: "ChatGPT",
+    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&auto=format&fit=crop&q=80",
+    website: "https://chatgpt.com/"
   },
   {
     id: 3,
-    name: "Automotive",
-    image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1200&auto=format&fit=crop&q=80",
+    name: "DALL-E 3",
+    image: "https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=1200&auto=format&fit=crop&q=80",
+    website: "https://openai.com/dall-e-3"
   },
   {
     id: 4,
-    name: "Product Photography",
-    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1200&auto=format&fit=crop&q=80",
+    name: "Stable Diffusion",
+    image: "https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?w=1200&auto=format&fit=crop&q=80",
+    website: "https://stability.ai/"
   },
   {
     id: 5,
-    name: "Architecture & Interior",
-    image: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=1200&auto=format&fit=crop&q=80",
+    name: "Claude",
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&auto=format&fit=crop&q=80",
+    website: "https://claude.ai/"
   },
   {
     id: 6,
-    name: "Art & Illustration",
-    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=1200&auto=format&fit=crop&q=80",
+    name: "Gemini",
+    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&auto=format&fit=crop&q=80",
+    website: "https://gemini.google.com/"
   },
   {
     id: 7,
-    name: "3D & CGI",
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=80",
+    name: "Runway",
+    image: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1200&auto=format&fit=crop&q=80",
+    website: "https://runwayml.com/"
   },
   {
     id: 8,
-    name: "Branding & Marketing",
-    image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1200&auto=format&fit=crop&q=80",
+    name: "Sora",
+    image: "https://images.unsplash.com/photo-1601513445506-2ab0d4fb4229?w=1200&auto=format&fit=crop&q=80",
+    website: "https://openai.com/sora"
   },
   {
     id: 9,
-    name: "UI / UX & Web Design",
-    image: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=1200&auto=format&fit=crop&q=80",
+    name: "Leonardo AI",
+    image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1200&auto=format&fit=crop&q=80",
+    website: "https://leonardo.ai/"
   },
   {
     id: 10,
-    name: "Cinematic & Fantasy",
-    image: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1200&auto=format&fit=crop&q=80",
+    name: "Suno",
+    image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1200&auto=format&fit=crop&q=80",
+    website: "https://suno.com/"
   },
+  {
+    id: 11,
+    name: "ElevenLabs",
+    image: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=1200&auto=format&fit=crop&q=80",
+    website: "https://elevenlabs.io/"
+  },
+  {
+    id: 12,
+    name: "Luma",
+    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=80",
+    website: "https://lumalabs.ai/"
+  }
 ];
 
-const angleStep = 360 / stylesData.length;
-const promptStyles = stylesData.map((style, index) => ({
+const angleStep = 360 / platformsData.length;
+const promptStyles = platformsData.map((style, index) => ({
   ...style,
   angle: -150 + (index * angleStep)
 }));
@@ -130,9 +152,17 @@ const StyleDial = () => {
         <h1 className="text-3xl md:text-5xl font-black mb-2 md:mb-4 tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white to-slate-300">
           {activeStyle.name}
         </h1>
-        <p className="text-sm md:text-lg text-slate-200 leading-relaxed">
-          Discover a diverse range of prompt styles. Select a category on the dial to explore the aesthetic possibilities.
+        <p className="text-sm md:text-lg text-slate-200 leading-relaxed mb-4">
+          Discover a diverse range of prompt platforms. Select a category on the dial to explore AI models and capabilities.
         </p>
+        <a 
+          href={activeStyle.website} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center gap-2 px-6 py-2 bg-[#FA6631] text-white font-bold rounded-full shadow-[0_4px_14px_0_rgba(250,102,49,0.39)] hover:bg-[#e05625] transition-all hover:scale-105"
+        >
+          Visit Website <ExternalLink size={18} />
+        </a>
       </div>
 
       {/* Desktop Radial Menu Container */}
