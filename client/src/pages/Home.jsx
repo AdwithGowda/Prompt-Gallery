@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Database, Copy, Layers, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
@@ -214,7 +214,7 @@ const Home = () => {
             </div>
 
             {/* Right Side: Content (Slider on Mobile) */}
-            <div className="w-full md:w-7/12 relative">
+            <div className="w-full md:w-7/12 relative min-h-[450px] sm:min-h-[400px] md:min-h-[350px]">
               
               {/* Mobile Arrows */}
               <button 
@@ -231,30 +231,33 @@ const Home = () => {
                 <ChevronRight size={24} />
               </button>
 
-              <motion.div 
-                key={activeFeature}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.4 }}
-                className="bg-[#F7F5F0] p-10 md:p-14 rounded-3xl border border-[#E5E2DC] h-full min-h-[350px] flex flex-col md:flex-row items-center justify-between relative z-10 overflow-hidden gap-8"
-              >
-                <div className="flex-1 relative z-10 w-full">
-                  <h3 className="text-2xl md:text-3xl font-extrabold text-[#5C5450] mb-4">{features[activeFeature].title}</h3>
-                  <p className="text-lg md:text-xl text-[#A09690] leading-relaxed">
-                    {features[activeFeature].content}
-                  </p>
-                </div>
-                
-                {features[activeFeature].image && (
-                  <div className="w-32 md:w-48 xl:w-56 shrink-0 relative z-10 flex justify-center">
-                    <img 
-                      src={features[activeFeature].image} 
-                      alt="Feature illustration" 
-                      className="w-full h-auto object-contain opacity-90 drop-shadow-sm"
-                    />
+              <AnimatePresence mode="wait">
+                <motion.div 
+                  key={activeFeature}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                  className="bg-[#F7F5F0] p-10 md:p-14 rounded-3xl border border-[#E5E2DC] h-full flex flex-col md:flex-row items-center justify-between relative z-10 overflow-hidden gap-8"
+                >
+                  <div className="flex-1 relative z-10 w-full">
+                    <h3 className="text-2xl md:text-3xl font-extrabold text-[#5C5450] mb-4">{features[activeFeature].title}</h3>
+                    <p className="text-lg md:text-xl text-[#A09690] leading-relaxed">
+                      {features[activeFeature].content}
+                    </p>
                   </div>
-                )}
-              </motion.div>
+                  
+                  {features[activeFeature].image && (
+                    <div className="w-32 md:w-48 xl:w-56 shrink-0 relative z-10 flex justify-center">
+                      <img 
+                        src={features[activeFeature].image} 
+                        alt="Feature illustration" 
+                        className="w-full h-auto object-contain opacity-90 drop-shadow-sm"
+                      />
+                    </div>
+                  )}
+                </motion.div>
+              </AnimatePresence>
             </div>
           </div>
         </div>
@@ -296,6 +299,13 @@ const Home = () => {
       <footer className="bg-white py-8 border-t border-[#E5E2DC] text-center text-[#A09690]/80 text-sm">
         <p>© {new Date().getFullYear()} Prompt Gallery AI. Designed with minimalism in mind.</p>
       </footer>
+
+      {/* Preload images to prevent delay on slider change */}
+      <div className="hidden">
+        {features.map((feature, idx) => (
+          feature.image && <img key={`preload-${idx}`} src={feature.image} alt="preload" />
+        ))}
+      </div>
     </div>
   );
 };

@@ -165,11 +165,18 @@ const Category = () => {
   }, [activePlatform, itemWidth]);
 
   return (
-    <div className="w-full bg-[#F7F5F0] flex flex-col pt-12 pb-12 transition-colors duration-700">
-      <div className="w-full flex flex-col">
-        {/* Category Section (Swiggy-style horizontal scroll) */}
+    <div className="w-full bg-[#F7F5F0] flex flex-col transition-colors duration-700">
+      {/* Wave Decorative Header */}
+      <div className="w-full overflow-hidden leading-[0]">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" className="w-full block h-[60px] md:h-[100px] scale-x-[-1]" preserveAspectRatio="none">
+          <path fill="#5C5450" d="M0,120 L1440,120 L1440,40 C1100,140 720,120 480,60 C240,0 120,20 0,40 Z"></path>
+        </svg>
+      </div>
+      
+      {/* Dark section matching the wave */}
+      <div className="w-full bg-[#5C5450] flex flex-col pb-0 pt-4">
         <div className="w-full relative z-10">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-[#5C5450] tracking-tight px-4 md:px-8">
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-white tracking-tight px-4 md:px-8">
             Explore by Platform
           </h2>
 
@@ -223,9 +230,9 @@ const Category = () => {
                     <div 
                       className={`
                         font-bold text-[10px] md:text-xs tracking-widest uppercase transition-all duration-500 z-10 flex flex-col items-center text-center leading-none
-                        ${isActive ? 'scale-110' : 'text-[#5C5450] opacity-70 group-hover:opacity-100'}
+                        ${isActive ? 'scale-110' : 'text-white/70 group-hover:text-white group-hover:opacity-100'}
                       `}
-                      style={isActive ? { color: activePlatform.strokeColor } : {}}
+                      style={isActive ? { color: activePlatform.strokeColor, textShadow: '0 0 10px rgba(255,255,255,0.5)' } : {}}
                     >
                       {platform.name.split(' ').map((word, idx) => (
                         <span key={idx}>{word}</span>
@@ -237,6 +244,7 @@ const Category = () => {
             </div>
           </div>
         </div>
+      </div>
 
         <div 
           className="w-full flex-1 pt-8 pb-12 px-6 md:px-12 flex flex-col relative z-0 mt-[-4px] border-4 rounded-b-xl md:rounded-b-2xl bg-white"
@@ -282,7 +290,6 @@ const Category = () => {
               </div>
             </div>
           </div>
-        </div>
       </div>
     </div>
   );
