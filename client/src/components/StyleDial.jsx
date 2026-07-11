@@ -130,7 +130,7 @@ const StyleDial = () => {
         <h1 className="text-3xl md:text-5xl font-black mb-2 md:mb-4 tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white to-slate-300">
           {activeStyle.name}
         </h1>
-        <p className="text-sm md:text-lg text-slate-200 leading-relaxed hidden md:block">
+        <p className="text-sm md:text-lg text-slate-200 leading-relaxed">
           Discover a diverse range of prompt styles. Select a category on the dial to explore the aesthetic possibilities.
         </p>
       </div>
