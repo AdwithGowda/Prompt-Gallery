@@ -6,73 +6,85 @@ const platformsData = [
     id: 1,
     name: "Midjourney",
     image: "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=1200&auto=format&fit=crop&q=80",
-    website: "https://www.midjourney.com/"
+    website: "https://www.midjourney.com/",
+    description: "Create highly detailed, artistic, and photorealistic AI images from text prompts."
   },
   {
     id: 2,
     name: "ChatGPT",
     image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&auto=format&fit=crop&q=80",
-    website: "https://chatgpt.com/"
+    website: "https://chatgpt.com/",
+    description: "Interact with an advanced conversational AI for coding, writing, and brainstorming."
   },
   {
     id: 3,
     name: "DALL-E 3",
     image: "https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=1200&auto=format&fit=crop&q=80",
-    website: "https://openai.com/dall-e-3"
+    website: "https://openai.com/dall-e-3",
+    description: "Generate incredibly accurate and imaginative images directly from text descriptions."
   },
   {
     id: 4,
     name: "Stable Diffusion",
     image: "https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?w=1200&auto=format&fit=crop&q=80",
-    website: "https://stability.ai/"
+    website: "https://stability.ai/",
+    description: "Harness open-source AI to create stunning visuals with fine-tuned precision and control."
   },
   {
     id: 5,
     name: "Claude",
     image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&auto=format&fit=crop&q=80",
-    website: "https://claude.ai/"
+    website: "https://claude.ai/",
+    description: "Experience next-generation AI with superior nuance, reasoning, and long-context understanding."
   },
   {
     id: 6,
     name: "Gemini",
     image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&auto=format&fit=crop&q=80",
-    website: "https://gemini.google.com/"
+    website: "https://gemini.google.com/",
+    description: "Explore Google's powerful multimodal AI capable of understanding text, images, and video."
   },
   {
     id: 7,
     name: "Runway",
     image: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1200&auto=format&fit=crop&q=80",
-    website: "https://runwayml.com/"
+    website: "https://runwayml.com/",
+    description: "Bring your imagination to life with cutting-edge AI video generation and editing tools."
   },
   {
     id: 8,
     name: "Sora",
     image: "https://images.unsplash.com/photo-1601513445506-2ab0d4fb4229?w=1200&auto=format&fit=crop&q=80",
-    website: "https://openai.com/sora"
+    website: "https://openai.com/sora",
+    description: "Create incredibly realistic and highly detailed video scenes from simple text prompts."
   },
   {
     id: 9,
     name: "Leonardo AI",
     image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1200&auto=format&fit=crop&q=80",
-    website: "https://leonardo.ai/"
+    website: "https://leonardo.ai/",
+    description: "Generate production-quality game assets, conceptual art, and more with unparalleled control."
   },
   {
     id: 10,
     name: "Suno",
     image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1200&auto=format&fit=crop&q=80",
-    website: "https://suno.com/"
+    website: "https://suno.com/",
+    description: "Compose original, full-length songs with AI-generated vocals and instrumentation."
   },
   {
     id: 11,
     name: "ElevenLabs",
     image: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=1200&auto=format&fit=crop&q=80",
-    website: "https://elevenlabs.io/"
+    website: "https://elevenlabs.io/",
+    description: "Generate lifelike speech in any voice, style, and language with advanced audio AI."
   },
   {
     id: 12,
     name: "Luma",
     image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&auto=format&fit=crop&q=80",
-    website: "https://lumalabs.ai/"
+    website: "https://lumalabs.ai/",
+    description: "Instantly create high-quality 3D models and dynamic videos from text and images."
   }
 ];
 
@@ -153,7 +165,7 @@ const StyleDial = () => {
           {activeStyle.name}
         </h1>
         <p className="text-sm md:text-lg text-slate-200 leading-relaxed mb-4">
-          Discover a diverse range of prompt platforms. Select a category on the dial to explore AI models and capabilities.
+          {activeStyle.description}
         </p>
         <a 
           href={activeStyle.website} 

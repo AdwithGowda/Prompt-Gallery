@@ -199,7 +199,9 @@ const Dashboard = () => {
     <div className="min-h-screen bg-[#F7F5F0] p-8 text-[#5C5450] font-sans relative">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 max-w-7xl mx-auto gap-6">
         <div>
-          <h1 className="text-3xl font-bold text-[#5C5450] tracking-tight">Welcome back, {user?.name || 'Creator'}</h1>
+          <h1 className="text-3xl font-bold text-[#5C5450] tracking-tight">
+            Welcome back, <span className="bg-gradient-to-r from-[#F97316] via-[#f59e0b] to-[#F97316] bg-clip-text text-transparent">{user?.name || 'Creator'}</span>
+          </h1>
         </div>
 
         <div className="flex items-center gap-2 md:gap-6 w-full md:w-auto">

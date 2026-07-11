@@ -168,6 +168,11 @@ const stylesData = [
 
 const CoverflowGallery = ({ images }) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+
+  // Minimum swipe distance
+  const minSwipeDistance = 50;
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -176,8 +181,45 @@ const CoverflowGallery = ({ images }) => {
     return () => clearInterval(interval);
   }, [images.length]);
 
+  const onTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches ? e.targetTouches[0].clientX : e.clientX);
+  };
+
+  const onTouchMove = (e) => {
+    // Prevent default scrolling on mobile if touching inside gallery
+    setTouchEnd(e.targetTouches ? e.targetTouches[0].clientX : e.clientX);
+  };
+
+  const onTouchEndEvent = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      setActiveIndex((current) => (current + 1) % images.length);
+    }
+    if (isRightSwipe) {
+      setActiveIndex((current) => (current - 1 + images.length) % images.length);
+    }
+    
+    // Reset values
+    setTouchStart(null);
+    setTouchEnd(null);
+  };
+
   return (
-    <div className="absolute inset-0 overflow-hidden flex items-center justify-center">
+    <div 
+      className="absolute inset-0 overflow-hidden flex items-center justify-center select-none cursor-grab active:cursor-grabbing"
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEndEvent}
+      onMouseDown={onTouchStart}
+      onMouseMove={onTouchMove}
+      onMouseUp={onTouchEndEvent}
+      onMouseLeave={() => { setTouchStart(null); setTouchEnd(null); }}
+    >
       <div className="relative w-full h-[60%] md:h-[70%] flex items-center justify-center" style={{ perspective: '1200px' }}>
         {images.map((image, index) => {
           let distance = index - activeIndex;
@@ -207,7 +249,14 @@ const CoverflowGallery = ({ images }) => {
           return (
             <div
               key={index}
-              onClick={() => setActiveIndex(index)}
+              onClick={(e) => {
+                if (touchStart && touchEnd && Math.abs(touchStart - touchEnd) > 10) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  return;
+                }
+                setActiveIndex(index);
+              }}
               className="absolute w-[60%] md:w-[35%] h-full rounded-xl md:rounded-2xl overflow-hidden cursor-pointer"
               style={{
                 zIndex: zIndex,
@@ -219,7 +268,7 @@ const CoverflowGallery = ({ images }) => {
               <img 
                 src={image} 
                 alt="Gallery" 
-                className={`w-full h-full object-cover transition-all duration-700 ${brightness}`}
+                className={`w-full h-full object-cover transition-all duration-700 pointer-events-none ${brightness}`}
               />
             </div>
           );
@@ -362,11 +411,11 @@ const Category = () => {
       </div>
 
         <div 
-          className="w-full flex-1 pt-8 pb-12 px-6 md:px-12 flex flex-col relative z-0 mt-[-4px] border-4 rounded-b-xl md:rounded-b-2xl bg-transparent"
+          className="w-full flex-1 pt-4 pb-6 md:pt-8 md:pb-12 px-6 md:px-12 flex flex-col relative z-0 mt-[-4px] border-4 rounded-b-xl md:rounded-b-2xl bg-transparent"
           style={{ borderColor: '#F97316' }}
         >
           <div 
-            className="w-full flex-1 min-h-[60vh] md:min-h-[70vh] rounded-lg md:rounded-xl overflow-hidden relative group"
+            className="w-full flex-1 min-h-[40vh] md:min-h-[70vh] rounded-lg md:rounded-xl overflow-hidden relative group"
           >
             {/* 3D Coverflow Gallery Background */}
             <CoverflowGallery images={activeStyle.images || [activeStyle.image]} />
