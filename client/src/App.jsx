@@ -11,16 +11,17 @@ import Dashboard from './pages/Dashboard';
 
 // Components
 import Navbar from './components/Navbar';
+import OfflineIndicator from './components/OfflineIndicator';
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
-  if (loading) return <div className="min-h-screen bg-[#F7F5F0] flex items-center justify-center text-[#5C5450]">Loading...</div>;
+  if (loading) return <div className="min-h-screen bg-[#F7F6F3] flex items-center justify-center text-[#262626]">Loading...</div>;
   return user ? children : <Navigate to="/login" />;
 };
 
 const PublicOnlyRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
-  if (loading) return <div className="min-h-screen bg-[#F7F5F0] flex items-center justify-center text-[#5C5450]">Loading...</div>;
+  if (loading) return <div className="min-h-screen bg-[#F7F6F3] flex items-center justify-center text-[#262626]">Loading...</div>;
   return !user ? children : <Navigate to="/dashboard" />;
 };
 
@@ -28,7 +29,8 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="min-h-screen bg-[#F7F5F0] font-sans text-[#5C5450]">
+        <div className="min-h-screen bg-[#F7F6F3] font-sans text-[#262626]">
+          <OfflineIndicator />
           <Toaster 
             position="bottom-right"
             toastOptions={{

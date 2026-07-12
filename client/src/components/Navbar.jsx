@@ -36,55 +36,53 @@ const Navbar = () => {
 
   return (
     <>
-      <div className={`w-full z-50 flex justify-center ${isHome ? 'absolute top-4' : 'sticky top-4 mb-4'}`}>
-        <nav className={`w-[96%] max-w-7xl rounded-full transition-all duration-300 ${
-          isHome ? 'bg-white/70 backdrop-blur-md shadow-sm border border-white/50' : 'bg-white/90 backdrop-blur-md shadow-md border border-[#E5E2DC]'
-        }`}>
-          <div className="px-5 md:px-8 py-3 flex justify-between items-center">
+      <div className="fixed top-0 w-full z-50 flex justify-center">
+        <nav className="w-full transition-all duration-300 bg-white/70 backdrop-blur-md border-b border-white/50 shadow-sm">
+          <div className="px-5 md:px-8 py-4 flex justify-between items-center max-w-7xl mx-auto w-full">
           
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 z-50">
             <img src={logoImg} alt="Prompt Gallery Logo" className="h-8 w-auto object-contain" />
-            <span className="text-2xl font-bold tracking-tight text-[#5C5450]">Prompt Gallery</span>
+            <span className="text-2xl font-bold tracking-tight text-[#262626]">Prompt Gallery</span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden md:flex items-center gap-4">
             {user ? (
               <>
                 {!isHome && (
-                  <Link to="/" className="flex items-center gap-2 text-sm font-bold transition-all px-1 py-1 text-[#5C5450] border-b-2 border-transparent hover:border-[#F97316]">
+                  <Link to="/" className="flex items-center gap-2 text-sm font-medium transition-all px-2 py-1 text-[#262626] hover:text-gray-600">
                     <HomeIcon size={18} /> Home
                   </Link>
                 )}
                 
                 {isHome && (
-                  <Link to="/dashboard" className="mr-2 bg-[#5C5450] hover:bg-[#FB923C] text-white px-5 py-2.5 rounded-full text-sm font-bold transition-all shadow-sm hover:shadow-md">
+                  <Link to="/dashboard" className="mr-2 bg-[#262626] hover:bg-[#1a1a1a] text-white px-4 py-2 rounded-full text-sm font-medium transition-all shadow-sm">
                     Dashboard
                   </Link>
                 )}
                 
                 <button 
                   onClick={() => setIsEditProfileModalOpen(true)} 
-                  className="flex items-center gap-2 text-sm font-bold transition-all px-1 py-1 text-[#5C5450] border-b-2 border-transparent hover:border-[#F97316]"
+                  className="flex items-center gap-2 text-sm font-medium transition-all px-2 py-1 text-[#262626] hover:text-gray-600"
                 >
                   <UserIcon size={18} /> Edit Profile
                 </button>
 
                 <button 
                   onClick={handleSignOut} 
-                  className="flex items-center gap-2 text-sm font-bold transition-all px-1 py-1 text-[#5C5450] border-b-2 border-transparent hover:border-[#F97316]"
+                  className="flex items-center gap-2 text-sm font-medium transition-all px-2 py-1 text-[#262626] hover:text-gray-600"
                 >
                   <LogOut size={18} /> Sign Out
                 </button>
               </>
             ) : (
               <>
-                <Link to="/login" className="text-sm font-bold transition-all px-1 py-1 text-[#5C5450] border-b-2 border-transparent hover:border-[#F97316]">
-                  Log In
+                <Link to="/login" className="text-sm font-medium transition-all px-4 py-2 text-[#262626] border border-gray-200 rounded-full hover:bg-gray-50 bg-white">
+                  Log in
                 </Link>
-                <Link to="/register" className="ml-2 bg-[#5C5450] hover:bg-[#FB923C] text-white px-5 py-2.5 rounded-full text-sm font-bold transition-all shadow-sm hover:shadow-md">
-                  Sign Up
+                <Link to="/register" className="ml-1 bg-[#262626] hover:bg-[#1a1a1a] text-white px-4 py-2 rounded-full text-sm font-medium transition-all">
+                  Sign up
                 </Link>
               </>
             )}
@@ -92,7 +90,7 @@ const Navbar = () => {
 
           {/* Mobile Menu Toggle Button */}
           <button 
-            className="md:hidden z-50 p-2 text-[#5C5450] hover:bg-black/5 rounded-full transition-colors"
+            className="md:hidden z-50 p-2 text-[#262626] hover:bg-black/5 rounded-full transition-colors"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -111,12 +109,16 @@ const Navbar = () => {
               <div className="px-6 py-4 flex flex-col gap-4">
                 {user ? (
                   <>
-                    <div className="flex items-center gap-3 p-3 bg-[#F7F5F0] rounded-xl mb-2 border border-[#E5E2DC]">
-                      <div className="w-10 h-10 bg-[#5C5450] rounded-full flex items-center justify-center text-white font-bold text-lg shrink-0">
-                        {user.name?.charAt(0).toUpperCase() || <UserIcon size={20} />}
+                    <div className="flex items-center gap-3 p-3 bg-[#F7F6F3] rounded-xl mb-2 border border-[#E5E2DC]">
+                      <div className="w-10 h-10 bg-[#262626] rounded-full flex items-center justify-center text-white font-bold text-lg shrink-0 overflow-hidden">
+                        {user.avatar ? (
+                          <img src={user.avatar} alt="Avatar" className="w-full h-full object-cover" />
+                        ) : (
+                          <UserIcon size={20} />
+                        )}
                       </div>
                       <div className="overflow-hidden">
-                        <div className="font-bold text-[#5C5450] truncate">{user.name}</div>
+                        <div className="font-bold text-[#262626] truncate">{user.name}</div>
                         <div className="text-xs text-[#A09690] truncate">{user.email}</div>
                       </div>
                     </div>
@@ -128,7 +130,7 @@ const Navbar = () => {
                     )}
                     
                     {!isHome && (
-                      <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 p-3 text-[#5C5450] font-bold hover:bg-slate-50 rounded-xl">
+                      <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 p-3 text-[#262626] font-bold hover:bg-slate-50 rounded-xl">
                         <HomeIcon size={20} className="text-[#A09690]" /> Home
                       </Link>
                     )}
@@ -138,7 +140,7 @@ const Navbar = () => {
                         setIsMobileMenuOpen(false);
                         setIsEditProfileModalOpen(true);
                       }} 
-                      className="flex items-center gap-3 p-3 text-[#5C5450] font-bold hover:bg-slate-50 rounded-xl"
+                      className="flex items-center gap-3 p-3 text-[#262626] font-bold hover:bg-slate-50 rounded-xl"
                     >
                       <UserIcon size={20} className="text-[#A09690]" /> Edit Profile
                     </button>
@@ -152,10 +154,10 @@ const Navbar = () => {
                   </>
                 ) : (
                   <div className="flex flex-col gap-3">
-                    <Link to="/login" className="flex justify-center border border-[#E5E2DC] text-[#5C5450] bg-white px-5 py-3 rounded-xl font-bold shadow-sm">
+                    <Link to="/login" className="flex justify-center border border-[#E5E2DC] text-[#262626] bg-white px-5 py-3 rounded-xl font-bold shadow-sm">
                       Log In
                     </Link>
-    <Link to="/register" className="flex justify-center bg-[#5C5450] text-white px-5 py-3 rounded-xl font-bold shadow-sm">
+    <Link to="/register" className="flex justify-center bg-[#262626] text-white px-5 py-3 rounded-xl font-bold shadow-sm">
                       Sign Up
                     </Link>
                   </div>
@@ -180,7 +182,7 @@ const Navbar = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#F7F5F0]"
+            className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#F7F6F3]"
           >
             <div className="relative mb-6">
               <div className="w-20 h-20 border-4 border-[#E5E2DC] rounded-full"></div>
@@ -190,7 +192,7 @@ const Navbar = () => {
               initial={{ y: 10, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="text-3xl font-bold text-[#5C5450] tracking-tight mb-2"
+              className="text-3xl font-bold text-[#262626] tracking-tight mb-2"
             >
               Signing out...
             </motion.h2>

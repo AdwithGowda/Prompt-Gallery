@@ -44,44 +44,44 @@ const Register = () => {
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-md p-8 space-y-6 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-white/20 relative z-10"
       >
-        <h2 className="text-3xl font-bold text-center text-[#5C5450]">Create Account</h2>
+        <h2 className="text-3xl font-bold text-center text-[#262626]">Create Account</h2>
         <p className="text-center text-[#A09690]">Join Prompt Gallery AI today</p>
         
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-bold text-[#5C5450]">Name</label>
+            <label className="block text-sm font-bold text-[#262626]">Name</label>
             <input 
               type="text" 
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-2 mt-1 bg-[#F0EEEB] border border-[#E5E2DC] rounded-xl focus:ring-1 focus:ring-[#5C5450] focus:border-[#5C5450] focus:outline-none text-[#5C5450] transition-colors"
+              className="w-full px-4 py-2 mt-1 bg-[#F0EEEB] border border-[#E5E2DC] rounded-xl focus:ring-1 focus:ring-[#262626] focus:border-[#262626] focus:outline-none text-[#262626] transition-colors"
               required 
             />
           </div>
           <div>
-            <label className="block text-sm font-bold text-[#5C5450]">Email</label>
+            <label className="block text-sm font-bold text-[#262626]">Email</label>
             <input 
               type="email" 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 mt-1 bg-[#F0EEEB] border border-[#E5E2DC] rounded-xl focus:ring-1 focus:ring-[#5C5450] focus:border-[#5C5450] focus:outline-none text-[#5C5450] transition-colors"
+              className="w-full px-4 py-2 mt-1 bg-[#F0EEEB] border border-[#E5E2DC] rounded-xl focus:ring-1 focus:ring-[#262626] focus:border-[#262626] focus:outline-none text-[#262626] transition-colors"
               required 
             />
           </div>
           <div>
-            <label className="block text-sm font-bold text-[#5C5450]">Password</label>
+            <label className="block text-sm font-bold text-[#262626]">Password</label>
             <div className="relative mt-1">
               <input 
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 pr-10 bg-[#F0EEEB] border border-[#E5E2DC] rounded-xl focus:ring-1 focus:ring-[#5C5450] focus:border-[#5C5450] focus:outline-none text-[#5C5450] transition-colors"
+                className="w-full px-4 py-2 pr-10 bg-[#F0EEEB] border border-[#E5E2DC] rounded-xl focus:ring-1 focus:ring-[#262626] focus:border-[#262626] focus:outline-none text-[#262626] transition-colors"
                 required 
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-3 flex items-center text-[#A09690] hover:text-[#5C5450] transition-colors"
+                className="absolute inset-y-0 right-3 flex items-center text-[#A09690] hover:text-[#262626] transition-colors"
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -90,7 +90,7 @@ const Register = () => {
           <button 
             type="submit" 
             disabled={isLoading}
-            className="w-full flex items-center justify-center gap-2 py-2.5 font-bold text-white bg-[#F97316] rounded-xl hover:bg-[#FB923C] transition duration-200 shadow-sm mt-2 disabled:opacity-70 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center gap-2 py-2.5 font-bold text-white bg-[#262626] rounded-xl hover:bg-[#404040] transition duration-200 shadow-sm mt-2 disabled:opacity-70 disabled:cursor-not-allowed"
           >
             {isLoading ? (
               <>
@@ -103,7 +103,7 @@ const Register = () => {
           </button>
         </form>
         <div className="text-center text-sm text-[#A09690]">
-          Already have an account? <Link to="/login" className="text-[#5C5450] font-bold hover:underline">Sign in</Link>
+          Already have an account? <Link to="/login" className="text-[#262626] font-bold hover:underline">Sign in</Link>
         </div>
       </motion.div>
     </div>

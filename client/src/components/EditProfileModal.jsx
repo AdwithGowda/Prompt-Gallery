@@ -1,8 +1,9 @@
 import { useState, useContext, useEffect } from 'react';
-import { X, User as UserIcon, Eye, EyeOff, Edit2 } from 'lucide-react';
+import { X, User as UserIcon, Eye, EyeOff, Edit2, Trash2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AuthContext } from '../context/AuthContext';
 import { toast } from 'react-hot-toast';
+import api from '../api';
 
 const EditProfileModal = ({ isOpen, onClose }) => {
   const { user, updateProfile } = useContext(AuthContext);
@@ -18,6 +19,9 @@ const EditProfileModal = ({ isOpen, onClose }) => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isEditingName, setIsEditingName] = useState(false);
   const [isEditingEmail, setIsEditingEmail] = useState(false);
+  const [avatarFile, setAvatarFile] = useState(null);
+  const [avatarPreview, setAvatarPreview] = useState(null);
+  const [removeAvatar, setRemoveAvatar] = useState(false);
 
   useEffect(() => {
     if (isOpen && user) {
@@ -29,6 +33,9 @@ const EditProfileModal = ({ isOpen, onClose }) => {
       });
       setIsEditingName(false);
       setIsEditingEmail(false);
+      setAvatarFile(null);
+      setAvatarPreview(null);
+      setRemoveAvatar(false);
     }
   }, [isOpen, user]);
 
@@ -42,9 +49,26 @@ const EditProfileModal = ({ isOpen, onClose }) => {
     
     setIsLoading(true);
     
+    let uploadedAvatarUrl = removeAvatar ? '' : user.avatar;
+    if (avatarFile) {
+      try {
+        const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+        const token = userInfo.token;
+        const config = { headers: { Authorization: `Bearer ${token}` } };
+        const uploadData = new FormData();
+        uploadData.append('image', avatarFile);
+        const uploadRes = await api.post('/upload', uploadData, config);
+        uploadedAvatarUrl = uploadRes.data.url;
+      } catch (error) {
+        toast.error('Failed to upload avatar');
+        setIsLoading(false);
+        return;
+      }
+    }
+    
     const passwordToUpdate = formData.password ? formData.password : undefined;
     
-    const result = await updateProfile(formData.name, formData.email, passwordToUpdate);
+    const result = await updateProfile(formData.name, formData.email, passwordToUpdate, uploadedAvatarUrl);
     
     if (result.success) {
       toast.success('Profile updated successfully!');
@@ -79,13 +103,13 @@ const EditProfileModal = ({ isOpen, onClose }) => {
             transition={{ type: "spring", bounce: 0.3, duration: 0.5 }}
             className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl border border-[#E5E2DC] overflow-hidden flex flex-col"
           >
-            <div className="p-6 border-b border-[#E5E2DC] flex justify-between items-center bg-[#F7F5F0]">
-              <h2 className="text-xl font-bold text-[#5C5450] flex items-center gap-2">
-                <UserIcon size={20} className="text-[#5C5450]" /> Edit Profile
+            <div className="p-6 border-b border-[#E5E2DC] flex justify-between items-center bg-[#F7F6F3]">
+              <h2 className="text-xl font-bold text-[#262626] flex items-center gap-2">
+                <UserIcon size={20} className="text-[#262626]" /> Edit Profile
               </h2>
               <button 
                 onClick={onClose}
-                className="p-2 bg-white hover:bg-slate-50 text-[#A09690] hover:text-[#5C5450] rounded-full transition-colors border border-[#E5E2DC] shadow-sm"
+                className="p-2 bg-white hover:bg-slate-50 text-[#A09690] hover:text-[#262626] rounded-full transition-colors border border-[#E5E2DC] shadow-sm"
               >
                 <X size={18} />
               </button>
@@ -93,9 +117,53 @@ const EditProfileModal = ({ isOpen, onClose }) => {
 
             <div className="p-6">
               <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="flex flex-col items-center justify-center mb-2 mt-2">
+                  <div className="relative">
+                    <div className="w-24 h-24 rounded-full border-4 border-[#F7F6F3] shadow-sm bg-white flex items-center justify-center overflow-hidden">
+                      {avatarPreview || (user?.avatar && !removeAvatar) ? (
+                        <img 
+                          src={avatarPreview || user?.avatar} 
+                          alt="Avatar" 
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <UserIcon size={40} className="text-[#A09690]" />
+                      )}
+                    </div>
+                    <label className="absolute bottom-0 right-0 bg-[#F97316] text-white p-2 rounded-full cursor-pointer shadow-md hover:bg-[#FB923C] transition-colors border-2 border-white" title="Change Avatar">
+                      <Edit2 size={12} />
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        className="hidden" 
+                        onChange={(e) => {
+                          if (e.target.files && e.target.files[0]) {
+                            setAvatarFile(e.target.files[0]);
+                            setAvatarPreview(URL.createObjectURL(e.target.files[0]));
+                            setRemoveAvatar(false);
+                          }
+                        }}
+                      />
+                    </label>
+                    { (avatarPreview || (user?.avatar && !removeAvatar)) && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setAvatarFile(null);
+                          setAvatarPreview(null);
+                          setRemoveAvatar(true);
+                        }}
+                        className="absolute bottom-0 left-0 bg-white text-red-500 p-2 rounded-full cursor-pointer shadow-md hover:bg-red-50 transition-colors border-2 border-white"
+                        title="Remove Avatar"
+                      >
+                        <Trash2 size={12} />
+                      </button>
+                    )}
+                  </div>
+                </div>
                 <div>
                   <div className="flex justify-between items-center mb-1">
-                    <label className="block text-sm font-bold text-[#5C5450]">Full Name</label>
+                    <label className="block text-sm font-bold text-[#262626]">Full Name</label>
                     <button 
                       type="button" 
                       onClick={() => {
@@ -117,8 +185,8 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                     placeholder="Your Name"
                     className={`w-full border rounded-xl px-4 py-2.5 transition-colors focus:outline-none focus:ring-1 ${
                       isEditingName 
-                        ? 'bg-[#F0EEEB] border-[#E5E2DC] text-[#5C5450] focus:border-[#F97316] focus:ring-[#F97316]' 
-                        : 'bg-[#F7F5F0] border-transparent text-[#A09690] cursor-not-allowed opacity-80'
+                        ? 'bg-[#F0EEEB] border-[#E5E2DC] text-[#262626] focus:border-[#F97316] focus:ring-[#F97316]' 
+                        : 'bg-[#F7F6F3] border-transparent text-[#A09690] cursor-not-allowed opacity-80'
                     }`}
                     required
                   />
@@ -126,7 +194,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
 
                 <div>
                   <div className="flex justify-between items-center mb-1">
-                    <label className="block text-sm font-bold text-[#5C5450]">Email Address</label>
+                    <label className="block text-sm font-bold text-[#262626]">Email Address</label>
                     <button 
                       type="button" 
                       onClick={() => {
@@ -148,15 +216,15 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                     placeholder="your@email.com"
                     className={`w-full border rounded-xl px-4 py-2.5 transition-colors focus:outline-none focus:ring-1 ${
                       isEditingEmail 
-                        ? 'bg-[#F0EEEB] border-[#E5E2DC] text-[#5C5450] focus:border-[#F97316] focus:ring-[#F97316]' 
-                        : 'bg-[#F7F5F0] border-transparent text-[#A09690] cursor-not-allowed opacity-80'
+                        ? 'bg-[#F0EEEB] border-[#E5E2DC] text-[#262626] focus:border-[#F97316] focus:ring-[#F97316]' 
+                        : 'bg-[#F7F6F3] border-transparent text-[#A09690] cursor-not-allowed opacity-80'
                     }`}
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-[#5C5450] mb-1">
+                  <label className="block text-sm font-bold text-[#262626] mb-1">
                     New Password <span className="text-xs font-normal text-[#A09690] ml-1">(Leave blank to keep current)</span>
                   </label>
                   <div className="relative">
@@ -165,12 +233,12 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                       value={formData.password}
                       onChange={(e) => setFormData({...formData, password: e.target.value})}
                       placeholder="••••••••"
-                      className="w-full bg-[#F0EEEB] border border-[#E5E2DC] rounded-xl px-4 py-2.5 pr-10 text-[#5C5450] placeholder-[#A09690] focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] transition-colors"
+                      className="w-full bg-[#F0EEEB] border border-[#E5E2DC] rounded-xl px-4 py-2.5 pr-10 text-[#262626] placeholder-[#A09690] focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] transition-colors"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute inset-y-0 right-3 flex items-center text-[#A09690] hover:text-[#5C5450] transition-colors"
+                      className="absolute inset-y-0 right-3 flex items-center text-[#A09690] hover:text-[#262626] transition-colors"
                     >
                       {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                     </button>
@@ -178,19 +246,19 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-[#5C5450] mb-1">Confirm New Password</label>
+                  <label className="block text-sm font-bold text-[#262626] mb-1">Confirm New Password</label>
                   <div className="relative">
                     <input 
                       type={showConfirmPassword ? 'text' : 'password'} 
                       value={formData.confirmPassword}
                       onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
                       placeholder="Confirm new password"
-                      className="w-full bg-[#F0EEEB] border border-[#E5E2DC] rounded-xl px-4 py-2.5 pr-10 text-[#5C5450] placeholder-[#A09690] focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] transition-colors"
+                      className="w-full bg-[#F0EEEB] border border-[#E5E2DC] rounded-xl px-4 py-2.5 pr-10 text-[#262626] placeholder-[#A09690] focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] transition-colors"
                     />
                     <button
                       type="button"
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute inset-y-0 right-3 flex items-center text-[#A09690] hover:text-[#5C5450] transition-colors"
+                      className="absolute inset-y-0 right-3 flex items-center text-[#A09690] hover:text-[#262626] transition-colors"
                     >
                       {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                     </button>
@@ -202,7 +270,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                     type="button"
                     onClick={onClose}
                     disabled={isLoading}
-                    className="px-5 py-2.5 rounded-xl font-medium text-[#5C5450] hover:bg-[#F7F5F0] transition-colors disabled:opacity-50 border border-transparent hover:border-[#E5E2DC]"
+                    className="px-5 py-2.5 rounded-xl font-medium text-[#262626] hover:bg-[#F7F6F3] transition-colors disabled:opacity-50 border border-transparent hover:border-[#E5E2DC]"
                   >
                     Cancel
                   </button>

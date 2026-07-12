@@ -333,12 +333,12 @@ const Category = () => {
       {/* Wave Decorative Header */}
       <div className="w-full overflow-hidden leading-[0]">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" className="w-full block h-[60px] md:h-[100px] scale-x-[-1]" preserveAspectRatio="none">
-          <path fill="#5C5450" d="M0,120 L1440,120 L1440,40 C1100,140 720,120 480,60 C240,0 120,20 0,40 Z"></path>
+          <path fill="#262626" d="M0,120 L1440,120 L1440,40 C1100,140 720,120 480,60 C240,0 120,20 0,40 Z"></path>
         </svg>
       </div>
       
       {/* Dark section matching the wave */}
-      <div className="w-full bg-[#5C5450] flex flex-col pb-0 pt-4">
+      <div className="w-full bg-[#262626] flex flex-col pb-0 pt-4">
         <div className="w-full relative z-10">
           <h2 className="text-3xl md:text-4xl font-bold mb-8 text-white tracking-tight px-4 md:px-8">
             Explore by Style
@@ -369,7 +369,7 @@ const Category = () => {
                 <svg viewBox="0 0 200 100" preserveAspectRatio="none" className="w-full h-full overflow-visible">
                   <path 
                     d="M 20 100 L 20 99 C 35 99, 45 89, 45 74 L 45 30 C 45 15, 60 2, 75 2 L 125 2 C 140 2, 155 15, 155 30 L 155 74 C 155 89, 165 99, 180 99 L 180 100 Z"
-                    fill="#F7F5F0"
+                    fill="#F7F6F3"
                   />
                   <path 
                     d="M 20 99 C 35 99, 45 89, 45 74 L 45 30 C 45 15, 60 2, 75 2 L 125 2 C 140 2, 155 15, 155 30 L 155 74 C 155 89, 165 99, 180 99"

@@ -78,7 +78,7 @@ const Home = () => {
   ];
 
   return (
-    <div className="min-h-screen text-[#5C5450] font-sans selection:bg-[#F97316] selection:text-white overflow-x-hidden">
+    <div className="min-h-screen text-[#262626] font-sans selection:bg-[#F97316] selection:text-white overflow-x-hidden">
 
 
       {/* Floating Images Background */}
@@ -112,14 +112,14 @@ const Home = () => {
       {/* Hero Section */}
       <main className="max-w-7xl mx-auto px-6 pt-36 pb-24 md:pt-48 relative z-10">
         <div className="text-center max-w-5xl mx-auto">
-          <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-[#EBE8E3] text-[#5C5450] font-bold text-sm tracking-wide">
+          <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-[#EBE8E3] text-[#262626] font-bold text-sm tracking-wide">
             THE ULTIMATE PROMPT LIBRARY
           </div>
           <motion.h1 
             variants={typingContainer}
             initial="hidden"
             animate="visible"
-            className="text-5xl md:text-7xl font-extrabold tracking-tight text-[#5C5450] leading-[1.1] mb-6"
+            className="text-5xl md:text-7xl font-extrabold tracking-tight text-[#262626] leading-[1.1] mb-6"
           >
             {"Master your AI ".split("").map((char, index) => (
               <motion.span key={`l1-${index}`} variants={typingChar} className="inline-block">
@@ -127,7 +127,7 @@ const Home = () => {
               </motion.span>
             ))}
             <br/>
-            <motion.span className="text-transparent bg-clip-text bg-gradient-to-r from-[#5C5450] to-[#A09690] inline-block">
+            <motion.span className="text-transparent bg-clip-text bg-gradient-to-r from-[#262626] to-[#A09690] inline-block">
               {"prompts.".split("").map((char, index) => (
                 <motion.span key={`l2-${index}`} variants={typingChar} className="inline-block">
                   {char === " " ? "\u00A0" : char}
@@ -152,15 +152,15 @@ const Home = () => {
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             {user ? (
-              <Link to="/dashboard" className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#5C5450] hover:bg-[#FB923C] text-white px-8 py-4 rounded-2xl text-lg font-bold transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5">
+              <Link to="/dashboard" className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#262626] hover:bg-[#FB923C] text-white px-8 py-4 rounded-2xl text-lg font-bold transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5">
                 Go to Dashboard <ArrowRight size={20} />
               </Link>
             ) : (
               <>
-                <Link to="/register" className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#5C5450] hover:bg-[#FB923C] text-white px-8 py-4 rounded-2xl text-lg font-bold transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5">
+                <Link to="/register" className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#262626] hover:bg-[#FB923C] text-white px-8 py-4 rounded-2xl text-lg font-bold transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5">
                   Start Vaulting for Free <ArrowRight size={20} />
                 </Link>
-                <Link to="/login" className="w-full sm:w-auto flex items-center justify-center bg-white hover:bg-slate-50 text-[#5C5450] border border-[#E5E2DC] px-8 py-4 rounded-2xl text-lg font-bold transition-all shadow-sm">
+                <Link to="/login" className="w-full sm:w-auto flex items-center justify-center bg-white hover:bg-slate-50 text-[#262626] border border-[#E5E2DC] px-8 py-4 rounded-2xl text-lg font-bold transition-all shadow-sm">
                   I already have an account
                 </Link>
               </>
@@ -189,7 +189,7 @@ const Home = () => {
       <section className="bg-white py-24 relative z-10 border-t border-[#E5E2DC]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-[#5C5450] mb-4">Everything you need to create faster.</h2>
+            <h2 className="text-3xl font-bold text-[#262626] mb-4">Everything you need to create faster.</h2>
             <p className="text-[#A09690] max-w-xl mx-auto">Stop losing your best prompts in endless chat histories or messy spreadsheets.</p>
           </div>
           
@@ -203,10 +203,10 @@ const Home = () => {
                   className={`text-left px-6 py-5 rounded-2xl transition-all duration-300 border ${
                     activeFeature === idx 
                       ? 'bg-white border-[#F97316] shadow-lg transform md:scale-105 relative z-10' 
-                      : 'bg-[#F7F5F0] border-transparent hover:border-[#E5E2DC] hover:bg-white text-[#A09690]'
+                      : 'bg-[#F7F6F3] border-transparent hover:border-[#E5E2DC] hover:bg-white text-[#A09690]'
                   }`}
                 >
-                  <h3 className={`text-xl md:text-2xl font-bold transition-colors ${activeFeature === idx ? 'text-[#F97316]' : 'text-[#5C5450]'}`}>
+                  <h3 className={`text-xl md:text-2xl font-bold transition-colors ${activeFeature === idx ? 'text-[#F97316]' : 'text-[#262626]'}`}>
                     {feature.title}
                   </h3>
                 </button>
@@ -219,14 +219,14 @@ const Home = () => {
               {/* Mobile Arrows */}
               <button 
                 onClick={() => setActiveFeature((prev) => (prev - 1 + features.length) % features.length)}
-                className="md:hidden absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 bg-white shadow-lg text-[#5C5450] p-2 rounded-full border border-[#EAE6DF] z-20 hover:bg-[#F97316] hover:text-white transition-colors"
+                className="md:hidden absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 bg-white shadow-lg text-[#262626] p-2 rounded-full border border-[#EAE6DF] z-20 hover:bg-[#F97316] hover:text-white transition-colors"
               >
                 <ChevronLeft size={24} />
               </button>
               
               <button 
                 onClick={() => setActiveFeature((prev) => (prev + 1) % features.length)}
-                className="md:hidden absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 bg-white shadow-lg text-[#5C5450] p-2 rounded-full border border-[#EAE6DF] z-20 hover:bg-[#F97316] hover:text-white transition-colors"
+                className="md:hidden absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 bg-white shadow-lg text-[#262626] p-2 rounded-full border border-[#EAE6DF] z-20 hover:bg-[#F97316] hover:text-white transition-colors"
               >
                 <ChevronRight size={24} />
               </button>
@@ -238,10 +238,10 @@ const Home = () => {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.3 }}
-                  className="bg-[#F7F5F0] p-10 md:p-14 rounded-3xl border border-[#E5E2DC] h-full flex flex-col md:flex-row items-center justify-between relative z-10 overflow-hidden gap-8"
+                  className="bg-[#F7F6F3] p-10 md:p-14 rounded-3xl border border-[#E5E2DC] h-full flex flex-col md:flex-row items-center justify-between relative z-10 overflow-hidden gap-8"
                 >
                   <div className="flex-1 relative z-10 w-full">
-                    <h3 className="text-2xl md:text-3xl font-extrabold text-[#5C5450] mb-4">{features[activeFeature].title}</h3>
+                    <h3 className="text-2xl md:text-3xl font-extrabold text-[#262626] mb-4">{features[activeFeature].title}</h3>
                     <p className="text-lg md:text-xl text-[#A09690] leading-relaxed">
                       {features[activeFeature].content}
                     </p>

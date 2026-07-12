@@ -23,7 +23,7 @@ const PromptCard = ({ item, onClick, onCopy, onDelete, onToggleFavorite, viewMod
       
       <div className={`p-4 sm:p-5 flex flex-col flex-1 min-w-0 ${isList ? 'justify-center' : ''}`}>
         <div className="flex justify-between items-start mb-2 gap-2 sm:gap-4">
-          <h3 className={`font-bold text-[#5C5450] leading-tight ${isList ? 'text-base sm:text-xl line-clamp-1 sm:line-clamp-none' : 'text-lg'}`} title={item.title}>{item.title}</h3>
+          <h3 className={`font-bold text-[#262626] leading-tight ${isList ? 'text-base sm:text-xl line-clamp-1 sm:line-clamp-none' : 'text-lg'}`} title={item.title}>{item.title}</h3>
           <div className="flex gap-1 sm:gap-2 shrink-0">
               <button 
                 onClick={(e) => {
@@ -33,7 +33,7 @@ const PromptCard = ({ item, onClick, onCopy, onDelete, onToggleFavorite, viewMod
                 className={`transition-colors p-1.5 rounded-lg flex items-center justify-center ${
                   item.isFavorite 
                     ? 'text-[#F97316] bg-[#F97316]/10 hover:bg-[#F97316]/20' 
-                    : 'text-[#A09690]/80 hover:text-[#F97316] bg-[#F7F5F0] hover:bg-[#F97316]/10'
+                    : 'text-[#A09690]/80 hover:text-[#F97316] bg-[#F7F6F3] hover:bg-[#F97316]/10'
                 }`}
                 title={item.isFavorite ? "Remove from Favorites" : "Add to Favorites"}
               >
@@ -46,7 +46,7 @@ const PromptCard = ({ item, onClick, onCopy, onDelete, onToggleFavorite, viewMod
                     e.stopPropagation();
                     onDelete(item._id, e);
                   }}
-                  className="text-[#A09690]/80 hover:text-red-500 transition-colors p-1.5 bg-[#F7F5F0] hover:bg-red-50 rounded-lg flex items-center justify-center"
+                  className="text-[#A09690]/80 hover:text-red-500 transition-colors p-1.5 bg-[#F7F6F3] hover:bg-red-50 rounded-lg flex items-center justify-center"
                   title="Delete Prompt"
                 >
                   <Trash2 size={14} />
@@ -54,7 +54,7 @@ const PromptCard = ({ item, onClick, onCopy, onDelete, onToggleFavorite, viewMod
               )}
             <button 
               onClick={(e) => onCopy(item.prompt, e)}
-              className="text-[#A09690]/80 hover:text-[#5C5450] transition-colors p-1.5 bg-[#F7F5F0] hover:bg-[#EBE8E3] rounded-lg flex items-center gap-1"
+              className="text-[#A09690]/80 hover:text-[#262626] transition-colors p-1.5 bg-[#F7F6F3] hover:bg-[#EBE8E3] rounded-lg flex items-center gap-1"
               title="Copy Prompt"
             >
               <Copy size={14} />

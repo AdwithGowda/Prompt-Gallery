@@ -28,7 +28,7 @@ const ViewPromptModal = ({ prompt, onClose, onCopy }) => {
           >
             <button 
               onClick={onClose}
-              className="absolute top-4 right-4 z-10 p-2 bg-white/80 hover:bg-[#F7F5F0] text-[#A09690] hover:text-[#5C5450] rounded-full backdrop-blur-md transition-colors shadow-sm"
+              className="absolute top-4 right-4 z-10 p-2 bg-white/80 hover:bg-[#F7F6F3] text-[#A09690] hover:text-[#262626] rounded-full backdrop-blur-md transition-colors shadow-sm"
             >
               <X size={20} />
             </button>
@@ -58,13 +58,13 @@ const ViewPromptModal = ({ prompt, onClose, onCopy }) => {
               ) : (
                 <ImageIcon size={96} className="text-slate-300" />
               )}
-              <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-sm text-[#5C5450] text-sm font-bold px-3 py-1.5 rounded-full shadow-sm">
+              <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-sm text-[#262626] text-sm font-bold px-3 py-1.5 rounded-full shadow-sm">
                 {prompt.platform || prompt.aiModel}
               </div>
             </div>
 
             <div className="md:w-1/2 p-8 flex flex-col overflow-y-auto">
-              <h2 className="text-2xl font-bold text-[#5C5450] mb-4 leading-tight">{prompt.title}</h2>
+              <h2 className="text-2xl font-bold text-[#262626] mb-4 leading-tight">{prompt.title}</h2>
               
               <div className="flex flex-wrap gap-2 mb-6">
                 {prompt.tags.map(tag => (
@@ -75,9 +75,9 @@ const ViewPromptModal = ({ prompt, onClose, onCopy }) => {
               </div>
               
               <div className="flex-1 mb-6 flex flex-col min-h-0">
-                <h3 className="text-sm font-bold text-[#5C5450] uppercase tracking-wider mb-3 shrink-0">Prompt Details</h3>
-                <div className="bg-[#F7F5F0] border border-[#E5E2DC] rounded-xl p-4 flex-1 overflow-y-auto">
-                  <p className="text-[#5C5450] font-mono text-sm leading-relaxed whitespace-pre-wrap">
+                <h3 className="text-sm font-bold text-[#262626] uppercase tracking-wider mb-3 shrink-0">Prompt Details</h3>
+                <div className="bg-[#F7F6F3] border border-[#E5E2DC] rounded-xl p-4 flex-1 overflow-y-auto">
+                  <p className="text-[#262626] font-mono text-sm leading-relaxed whitespace-pre-wrap">
                     {prompt.prompt}
                   </p>
                 </div>

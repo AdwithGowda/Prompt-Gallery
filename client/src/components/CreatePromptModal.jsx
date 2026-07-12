@@ -21,13 +21,13 @@ const CreatePromptModal = ({ isOpen, onClose, formData, setFormData, onSubmit, i
             transition={{ type: "spring", bounce: 0.3, duration: 0.5 }}
             className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl border border-[#E5E2DC] overflow-hidden flex flex-col max-h-[90vh]"
           >
-            <div className="p-6 border-b border-[#E5E2DC] flex justify-between items-center bg-[#F7F5F0]">
-              <h2 className="text-2xl font-bold text-[#5C5450] flex items-center gap-2">
-                <Plus size={24} className="text-[#5C5450]" /> Add New Prompt
+            <div className="p-6 border-b border-[#E5E2DC] flex justify-between items-center bg-[#F7F6F3]">
+              <h2 className="text-2xl font-bold text-[#262626] flex items-center gap-2">
+                <Plus size={24} className="text-[#262626]" /> Add New Prompt
               </h2>
               <button 
                 onClick={onClose}
-                className="p-2 bg-white hover:bg-slate-50 text-[#A09690] hover:text-[#5C5450] rounded-full transition-colors border border-[#E5E2DC] shadow-sm"
+                className="p-2 bg-white hover:bg-slate-50 text-[#A09690] hover:text-[#262626] rounded-full transition-colors border border-[#E5E2DC] shadow-sm"
               >
                 <X size={18} />
               </button>
@@ -36,25 +36,25 @@ const CreatePromptModal = ({ isOpen, onClose, formData, setFormData, onSubmit, i
             <div className="p-6 overflow-y-auto">
               <form onSubmit={onSubmit} className="space-y-5">
                 <div>
-                  <label className="block text-sm font-bold text-[#5C5450] mb-1">Title</label>
+                  <label className="block text-sm font-bold text-[#262626] mb-1">Title</label>
                   <input 
                     type="text" 
                     value={formData.title}
                     onChange={(e) => setFormData({...formData, title: e.target.value})}
                     placeholder="E.g. Cyberpunk Neon Street"
-                    className="w-full bg-[#F0EEEB] border border-[#E5E2DC] rounded-xl px-4 py-2.5 text-[#5C5450] placeholder-[#A09690] focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] transition-colors"
+                    className="w-full bg-[#F0EEEB] border border-[#E5E2DC] rounded-xl px-4 py-2.5 text-[#262626] placeholder-[#A09690] focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] transition-colors"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-[#5C5450] mb-1">Reference Image (Optional)</label>
+                  <label className="block text-sm font-bold text-[#262626] mb-1">Reference Image (Optional)</label>
                   <input 
                     id="image-upload"
                     type="file" 
                     accept="image/*"
                     onChange={(e) => setFormData({...formData, image: e.target.files[0]})}
-                    className="w-full bg-[#F0EEEB] border border-[#E5E2DC] rounded-xl px-4 py-2 text-[#A09690] file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-[#5C5450]/10 file:text-[#5C5450] hover:file:bg-[#5C5450]/20 focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] transition-colors cursor-pointer"
+                    className="w-full bg-[#F0EEEB] border border-[#E5E2DC] rounded-xl px-4 py-2 text-[#A09690] file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-[#262626]/10 file:text-[#262626] hover:file:bg-[#262626]/20 focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] transition-colors cursor-pointer"
                   />
                   {formData.image && (
                     <div className="mt-4 relative rounded-xl overflow-hidden border border-[#E5E2DC] inline-block group shadow-sm bg-[#F0EEEB]">
@@ -70,7 +70,7 @@ const CreatePromptModal = ({ isOpen, onClose, formData, setFormData, onSubmit, i
                           if (fileInput) fileInput.value = '';
                           setFormData({...formData, image: null});
                         }}
-                        className="absolute top-2 right-2 p-1.5 bg-white/90 hover:bg-white text-[#5C5450] rounded-full transition-colors opacity-0 group-hover:opacity-100 backdrop-blur-sm shadow-md"
+                        className="absolute top-2 right-2 p-1.5 bg-white/90 hover:bg-white text-[#262626] rounded-full transition-colors opacity-0 group-hover:opacity-100 backdrop-blur-sm shadow-md"
                         title="Remove Image"
                       >
                         <X size={14} />
@@ -80,11 +80,11 @@ const CreatePromptModal = ({ isOpen, onClose, formData, setFormData, onSubmit, i
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-[#5C5450] mb-1">Platform</label>
+                  <label className="block text-sm font-bold text-[#262626] mb-1">Platform</label>
                   <select 
                     value={formData.platform}
                     onChange={(e) => setFormData({...formData, platform: e.target.value})}
-                    className="w-full bg-[#F0EEEB] border border-[#E5E2DC] rounded-xl px-4 py-2.5 text-[#5C5450] focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] transition-colors"
+                    className="w-full bg-[#F0EEEB] border border-[#E5E2DC] rounded-xl px-4 py-2.5 text-[#262626] focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] transition-colors"
                   >
                     <option value="Midjourney">Midjourney</option>
                     <option value="ChatGPT">ChatGPT</option>
@@ -108,25 +108,25 @@ const CreatePromptModal = ({ isOpen, onClose, formData, setFormData, onSubmit, i
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-[#5C5450] mb-1">Prompt Details</label>
+                  <label className="block text-sm font-bold text-[#262626] mb-1">Prompt Details</label>
                   <textarea 
                     value={formData.prompt}
                     onChange={(e) => setFormData({...formData, prompt: e.target.value})}
                     placeholder="Type your full prompt here..."
                     rows="4"
-                    className="w-full bg-[#F0EEEB] border border-[#E5E2DC] rounded-xl px-4 py-2.5 text-[#5C5450] placeholder-[#A09690] font-mono text-sm focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] transition-colors resize-none"
+                    className="w-full bg-[#F0EEEB] border border-[#E5E2DC] rounded-xl px-4 py-2.5 text-[#262626] placeholder-[#A09690] font-mono text-sm focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] transition-colors resize-none"
                     required
                   ></textarea>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-bold text-[#5C5450] mb-1">Tags (comma separated)</label>
+                  <label className="block text-sm font-bold text-[#262626] mb-1">Tags (comma separated)</label>
                   <input 
                     type="text" 
                     value={formData.tags}
                     onChange={(e) => setFormData({...formData, tags: e.target.value})}
                     placeholder="e.g. cinematic, 4k, neon"
-                    className="w-full bg-[#F0EEEB] border border-[#E5E2DC] rounded-xl px-4 py-2.5 text-[#5C5450] placeholder-[#A09690] focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] transition-colors"
+                    className="w-full bg-[#F0EEEB] border border-[#E5E2DC] rounded-xl px-4 py-2.5 text-[#262626] placeholder-[#A09690] focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] transition-colors"
                   />
                 </div>
 
@@ -135,7 +135,7 @@ const CreatePromptModal = ({ isOpen, onClose, formData, setFormData, onSubmit, i
                     type="button"
                     onClick={onClose}
                     disabled={isLoading}
-                    className="px-5 py-2.5 rounded-xl font-medium text-[#5C5450] hover:bg-[#F7F5F0] transition-colors disabled:opacity-50 border border-transparent hover:border-[#E5E2DC]"
+                    className="px-5 py-2.5 rounded-xl font-medium text-[#262626] hover:bg-[#F7F6F3] transition-colors disabled:opacity-50 border border-transparent hover:border-[#E5E2DC]"
                   >
                     Cancel
                   </button>

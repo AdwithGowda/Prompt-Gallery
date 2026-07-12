@@ -25,7 +25,7 @@ const DeleteConfirmationModal = ({ isOpen, onClose, onConfirm }) => {
               <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
                 <AlertTriangle size={32} className="text-red-500" />
               </div>
-              <h2 className="text-xl font-bold text-[#5C5450] mb-2">Delete Prompt?</h2>
+              <h2 className="text-xl font-bold text-[#262626] mb-2">Delete Prompt?</h2>
               <p className="text-[#A09690] text-sm">
                 Are you sure you want to delete this prompt? This action cannot be undone.
               </p>
@@ -34,7 +34,7 @@ const DeleteConfirmationModal = ({ isOpen, onClose, onConfirm }) => {
             <div className="p-6 pt-0 flex gap-3">
               <button 
                 onClick={onClose}
-                className="flex-1 px-4 py-2.5 rounded-xl font-medium text-[#5C5450] bg-[#F0EEEB] hover:bg-[#E5E2DC] transition-colors"
+                className="flex-1 px-4 py-2.5 rounded-xl font-medium text-[#262626] bg-[#F0EEEB] hover:bg-[#E5E2DC] transition-colors"
               >
                 Cancel
               </button>

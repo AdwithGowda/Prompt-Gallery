@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { Plus, Filter, Heart, FolderOpen, Search, LayoutGrid, List } from 'lucide-react';
+import { Plus, Filter, Heart, FolderOpen, Search, LayoutGrid, List, Sparkles, MessageSquare, Image as ImageIcon, Wand2, BrainCircuit, Video, Clapperboard, PenTool, Music, Mic, Box, Globe, User as UserIcon } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import api from '../api';
@@ -11,7 +11,21 @@ import CreatePromptModal from '../components/CreatePromptModal';
 import DeleteConfirmationModal from '../components/DeleteConfirmationModal';
 
 // Hardcoded platforms for the filter (you could also derive these dynamically)
-const filterPlatforms = ["All", "Gemini", "ChatGPT", "Midjourney", "DALL-E 3", "Stable Diffusion", "Claude", "Runway", "Sora", "Leonardo AI", "Suno", "ElevenLabs", "Luma"];
+const filterPlatforms = [
+  { name: "All", icon: Globe },
+  { name: "Gemini", icon: Sparkles },
+  { name: "ChatGPT", icon: MessageSquare },
+  { name: "Midjourney", icon: ImageIcon },
+  { name: "DALL-E 3", icon: ImageIcon },
+  { name: "Stable Diffusion", icon: Wand2 },
+  { name: "Claude", icon: BrainCircuit },
+  { name: "Runway", icon: Video },
+  { name: "Sora", icon: Clapperboard },
+  { name: "Leonardo AI", icon: PenTool },
+  { name: "Suno", icon: Music },
+  { name: "ElevenLabs", icon: Mic },
+  { name: "Luma", icon: Box }
+];
 
 const Dashboard = () => {
   const { user } = useContext(AuthContext);
@@ -196,12 +210,21 @@ const Dashboard = () => {
   });
 
   return (
-    <div className="min-h-screen bg-[#F7F5F0] p-8 text-[#5C5450] font-sans relative">
+    <div className="min-h-screen bg-[#F7F6F3] px-8 pt-24 pb-8 text-[#262626] font-sans relative">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 max-w-7xl mx-auto gap-6">
         <div>
-          <h1 className="text-3xl font-bold text-[#5C5450] tracking-tight">
-            Welcome back, <span className="bg-gradient-to-r from-[#F97316] via-[#f59e0b] to-[#F97316] bg-clip-text text-transparent">{user?.name || 'Creator'}</span>
-          </h1>
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-full border-2 border-white shadow-sm bg-white flex items-center justify-center overflow-hidden flex-shrink-0">
+              {user?.avatar ? (
+                <img src={user.avatar} alt="Avatar" className="w-full h-full object-cover" />
+              ) : (
+                <UserIcon size={24} className="text-[#A09690]" />
+              )}
+            </div>
+            <h1 className="text-3xl font-bold text-[#262626] tracking-tight">
+              Welcome back, <span className="bg-gradient-to-r from-[#F97316] via-[#f59e0b] to-[#F97316] bg-clip-text text-transparent">{user?.name || 'Creator'}</span>
+            </h1>
+          </div>
         </div>
 
         <div className="flex items-center gap-2 md:gap-6 w-full md:w-auto">
@@ -215,7 +238,7 @@ const Dashboard = () => {
                 placeholder="Search prompts..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 py-2.5 rounded-xl border border-[#E5E2DC] bg-white text-sm text-[#5C5450] placeholder-[#A09690] focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] transition-all w-full sm:w-64 shadow-sm"
+                className="pl-10 pr-4 py-2.5 rounded-xl border border-[#E5E2DC] bg-white text-sm text-[#262626] placeholder-[#A09690] focus:outline-none focus:border-[#F97316] focus:ring-1 focus:ring-[#F97316] transition-all w-full sm:w-64 shadow-sm"
               />
               <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#A09690]" />
             </div>
@@ -233,7 +256,7 @@ const Dashboard = () => {
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm hover:shadow-md ${
                 activeFilter === 'Favorites'
                   ? 'bg-[#F97316]/10 text-[#F97316] border border-[#F97316]/30'
-                  : 'bg-white border border-[#E5E2DC] text-[#A09690] hover:text-[#5C5450] hover:border-[#D0CCC5]'
+                  : 'bg-white border border-[#E5E2DC] text-[#A09690] hover:text-[#262626] hover:border-[#D0CCC5]'
               }`}
               title="Show Favorites"
             >
@@ -246,14 +269,14 @@ const Dashboard = () => {
             <div className="flex bg-[#F0EEEB] p-1 rounded-xl shadow-inner border border-[#E5E2DC] ml-1">
               <button
                 onClick={() => handleViewModeChange('list')}
-                className={`p-1.5 rounded-lg transition-all flex items-center justify-center ${viewMode === 'list' ? 'bg-white shadow-sm text-[#5C5450]' : 'text-[#A09690] hover:text-[#5C5450]'}`}
+                className={`p-1.5 rounded-lg transition-all flex items-center justify-center ${viewMode === 'list' ? 'bg-white shadow-sm text-[#262626]' : 'text-[#A09690] hover:text-[#262626]'}`}
                 title="List View"
               >
                 <List size={18} strokeWidth={2.5} />
               </button>
               <button
                 onClick={() => handleViewModeChange('grid')}
-                className={`p-1.5 rounded-lg transition-all flex items-center justify-center ${viewMode === 'grid' ? 'bg-white shadow-sm text-[#5C5450]' : 'text-[#A09690] hover:text-[#5C5450]'}`}
+                className={`p-1.5 rounded-lg transition-all flex items-center justify-center ${viewMode === 'grid' ? 'bg-white shadow-sm text-[#262626]' : 'text-[#A09690] hover:text-[#262626]'}`}
                 title="Grid View"
               >
                 <LayoutGrid size={18} strokeWidth={2.5} />
@@ -277,7 +300,9 @@ const Dashboard = () => {
       {/* Scrollable Filter Row */}
       <div className="max-w-7xl mx-auto w-full overflow-x-auto pb-4 mb-6 scrollbar-hide">
         <div className="flex items-center gap-3 w-max px-2">
-          {filterPlatforms.map(p => {
+          {filterPlatforms.map(platform => {
+            const p = platform.name;
+            const Icon = platform.icon;
             const isActive = activeFilter === p;
             const count = p === 'All' 
               ? prompts.length 
@@ -293,9 +318,10 @@ const Dashboard = () => {
                 className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all border ${
                   isActive
                     ? 'bg-[#F97316] border-[#F97316] text-white shadow-md shadow-[#F97316]/30' 
-                    : 'bg-[rgb(98,84,80)] border-[rgb(98,84,80)] text-white/90 hover:bg-[rgb(108,94,90)] hover:text-white'
+                    : 'bg-[#262626] border-[#262626] text-white/90 hover:bg-[#404040] hover:text-white'
                 }`}
               >
+                <Icon size={16} className={isActive ? 'text-white' : 'text-white/70'} />
                 <span>{p}</span>
                 {p !== 'All' && (
                   <span className={`text-xs font-medium ${isActive ? 'text-white/90' : 'text-white/60'}`}>
@@ -314,7 +340,7 @@ const Dashboard = () => {
             <div className="w-20 h-20 bg-white border border-[#E5E2DC] rounded-2xl flex items-center justify-center mb-4 shadow-sm">
               <FolderOpen size={40} className="text-[#A09690]" />
             </div>
-            <h3 className="text-xl font-bold text-[#5C5450] mb-2">It's empty in here</h3>
+            <h3 className="text-xl font-bold text-[#262626] mb-2">It's empty in here</h3>
             <p className="text-[#A09690]">No prompts found. Click "New Prompt" to create one!</p>
           </div>
         ) : (
