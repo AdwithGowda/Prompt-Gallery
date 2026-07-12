@@ -3,24 +3,43 @@ import { WifiOff } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const OfflineIndicator = () => {
-  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [show, setShow] = useState(!navigator.onLine);
 
   useEffect(() => {
-    const handleOnline = () => setIsOnline(true);
-    const handleOffline = () => setIsOnline(false);
+    let timeout;
+
+    const handleOnline = () => {
+      setShow(false);
+      if (timeout) clearTimeout(timeout);
+    };
+
+    const handleOffline = () => {
+      setShow(true);
+      if (timeout) clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        setShow(false);
+      }, 3000);
+    };
 
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
 
+    if (!navigator.onLine) {
+      timeout = setTimeout(() => {
+        setShow(false);
+      }, 3000);
+    }
+
     return () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
+      if (timeout) clearTimeout(timeout);
     };
   }, []);
 
   return (
     <AnimatePresence>
-      {!isOnline && (
+      {show && (
         <motion.div
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
