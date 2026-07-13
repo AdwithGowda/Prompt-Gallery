@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, LayoutGrid } from 'lucide-react';
 
 const stylesData = [
    {
@@ -340,9 +340,12 @@ const Category = () => {
       {/* Dark section matching the wave */}
       <div className="w-full bg-[#262626] flex flex-col pb-0 pt-4">
         <div className="w-full relative z-10">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-white tracking-tight px-4 md:px-8">
-            Explore by Style
-          </h2>
+          <div className="flex justify-between items-center mb-8 px-4 md:px-8">
+            <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight mb-0">
+              Explore by Style
+            </h2>
+            <LayoutGrid className="w-12 h-12 md:w-16 md:h-16 text-white mr-8 md:mr-24 animate-[spin_6s_linear_infinite]" strokeWidth={1.5} />
+          </div>
 
           {/* Outer container for scrolling with padding */}
           <div 
